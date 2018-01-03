@@ -79,7 +79,7 @@ twirl_templates = rule(
       executable = True,
       cfg = "host",
       allow_files = True,
-      default = Label("//rules_twirl:twirl"),
+      default = Label("//twirl-compiler"),
     )
   },
   outputs = {

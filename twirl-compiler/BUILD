@@ -1,5 +1,5 @@
 load("@io_bazel_rules_scala//scala:scala.bzl", "scala_binary")
-load(":twirl.bzl", "twirl_templates")
+load("//twirl:twirl.bzl", "twirl_templates")
 
 twirl_templates(
   name = "twirl-test",
@@ -14,7 +14,7 @@ twirl_templates(
 )
 
 scala_binary(
-  name = "twirl",
+  name = "twirl-compiler",
   srcs = glob(["src/main/**/*.scala"]),
   data = glob(["src/main/twirl/**"]),
   visibility = ["//visibility:public"],
