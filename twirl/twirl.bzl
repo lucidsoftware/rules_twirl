@@ -1,3 +1,8 @@
+"""Twirl Template rules
+
+Bazel rules for running the [Twirl Template Compiler](https://github.com/playframework/twirl) on Twirl Template Files
+"""
+
 gendir_path = "main/twirl"
 
 play_imports = [
@@ -10,10 +15,10 @@ play_imports = [
   "play.api.data._",
 ]
 
-def format_import_args(imports):
+def _format_import_args(imports):
   return ["--additionalImport={}".format(i) for i in imports]
 
-def format_template_format_args(template_formats):
+def _format_template_format_args(template_formats):
   return ["--templateFormat:{}={}".format(format, formatterType) for format, formatterType in template_formats.items()]
 
 def _impl(ctx):
@@ -21,11 +26,11 @@ def _impl(ctx):
   args = [gendir.path] + ["{},{}".format(f.path, ctx.file.source_directory.path) for f in ctx.files.srcs]
 
   if ctx.attr.include_play_imports:
-    args = args + format_import_args(play_imports)
+    args = args + _format_import_args(play_imports)
 
-  args = args + format_import_args(ctx.attr.additional_imports)
+  args = args + _format_import_args(ctx.attr.additional_imports)
 
-  args = args + format_template_format_args(ctx.attr.template_formats)
+  args = args + _format_template_format_args(ctx.attr.template_formats)
 
   template_outputs = _outputs(ctx, gendir)
 
@@ -55,8 +60,6 @@ def _outputs(ctx, gendir):
 
     template_path = input_file.dirname[source_directory_end + len(source_directory):]
     template_path = template_path.split("/views")
-    #template_path_1 = input_file.dirname[:views_index + len(views)]
-    #template_path_2 = input_file.dirname[views_index + len(views):]
 
     left_dot = input_file.basename.find(".")
     template_name = input_file.basename[:left_dot]
@@ -83,6 +86,23 @@ twirl_templates = rule(
     )
   },
   outputs = {
-    "srcjar": "twirl_%{name}.srcjar",
+    "srcjar": "twirl_%{name}-sources.jar",
   }
 )
+"""Compiles Twirl templates to Scala sources files.
+
+Args:
+  source_directory: Directories where Twirl template files will be found.
+  srcs: The actual template files contained in the source_directories.
+  additional_imports: Additional imports to import to the Twirl templates.
+  include_play_imports: If true, include the imports the Play project includes by default.
+  template_formats: Formatter types for file extensions.
+
+    The default formats are
+    ```
+    "html" -> "play.twirl.api.HtmlFormat",
+    "txt" -> "play.twirl.api.TxtFormat",
+    "xml" -> "play.twirl.api.XmlFormat",
+    "js" -> "play.twirl.api.JavaScriptFormat"
+    ```
+"""
