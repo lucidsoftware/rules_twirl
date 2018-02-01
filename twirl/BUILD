@@ -4,5 +4,5 @@ skylark_doc(
     name = "twirl-compiler-docs",
     srcs = ["twirl.bzl"],
     format = "html",
-    site_root = ".",
+    site_root = "/rules_twirl",
 )
