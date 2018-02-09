@@ -16,6 +16,7 @@ specs2_junit_repositories()
 
 load("@io_bazel_rules_scala//scala:toolchains.bzl", "scala_register_toolchains")
 scala_register_toolchains()
+
 git_repository(
     name = "io_bazel_rules_sass",
     remote = "https://github.com/bazelbuild/rules_sass.git",
@@ -31,6 +32,24 @@ git_repository(
 )
 load("@io_bazel_skydoc//skylark:skylark.bzl", "skydoc_repositories")
 skydoc_repositories()
+
+# For Skylint
+# Once https://github.com/bazelbuild/bazel/issues/4086 is done, this should be
+# much simpler
+http_archive(
+  name = "io_bazel",
+  url = "https://github.com/bazelbuild/bazel/releases/download/0.10.0/bazel-0.10.0-dist.zip",
+  sha256 = "47e0798caaac4df499bce5fe554a914abd884a855a27085a4473de1d737d9548",
+)
+# Also for Skylint. Comes from
+# https://github.com/cgrushko/proto_library/blob/master/WORKSPACE
+http_archive(
+  name = "com_google_protobuf",
+  sha256 = "cef7f1b5a7c5fba672bec2a319246e8feba471f04dcebfe362d55930ee7c1c30",
+  strip_prefix = "protobuf-3.5.0",
+  urls = ["https://github.com/google/protobuf/archive/v3.5.0.zip"],
+)
+
 maven_jar(
   name = "com_github_scopt_scopt_2_11",
   artifact = "com.github.scopt:scopt_2.11:jar:3.7.0",
