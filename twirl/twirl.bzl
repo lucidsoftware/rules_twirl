@@ -3,7 +3,7 @@
 Bazel rules for running the [Twirl Template Compiler](https://github.com/playframework/twirl) on Twirl Template Files
 """
 
-gendir_path = "main/twirl"
+gendir_base_path = "main/twirl"
 
 play_imports = [
   "models._",
@@ -15,6 +15,15 @@ play_imports = [
   "play.api.data._",
 ]
 
+def _sanitize_string_for_usage(s):
+  res_array = []
+  for c in s:
+    if c.isalnum() or c == ".":
+      res_array.append(c)
+    else:
+      res_array.append("_")
+  return "".join(res_array)
+
 def _format_import_args(imports):
   return ["--additionalImport={}".format(i) for i in imports]
 
@@ -22,6 +31,7 @@ def _format_template_format_args(template_formats):
   return ["--templateFormat:{}={}".format(format, formatterType) for format, formatterType in template_formats.items()]
 
 def _impl(ctx):
+  gendir_path = gendir_base_path + "/" + _sanitize_string_for_usage(ctx.attr.name)
   gendir = ctx.actions.declare_directory(gendir_path)
   args = [gendir.path] + ["{},{}".format(f.path, ctx.file.source_directory.path) for f in ctx.files.srcs]
 
@@ -32,7 +42,7 @@ def _impl(ctx):
 
   args = args + _format_template_format_args(ctx.attr.template_formats)
 
-  template_outputs = _outputs(ctx, gendir)
+  template_outputs = _outputs(ctx, gendir_path)
 
   ctx.actions.run(
     inputs = ctx.files.srcs,
@@ -51,7 +61,7 @@ def _impl(ctx):
   )
 
 
-def _outputs(ctx, gendir):
+def _outputs(ctx, gendir_path):
   template_files = []
 
   for input_file in ctx.files.srcs:
@@ -86,7 +96,7 @@ twirl_templates = rule(
     )
   },
   outputs = {
-    "srcjar": "twirl_%{name}-sources.jar",
+    "srcjar": "twirl_%{name}.srcjar",
   }
 )
 """Compiles Twirl templates to Scala sources files.

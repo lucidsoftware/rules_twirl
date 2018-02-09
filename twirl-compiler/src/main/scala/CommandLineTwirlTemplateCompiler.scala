@@ -1,4 +1,4 @@
-package com.lucid.twirl
+package rulestwirl.twirl
 
 import play.twirl.compiler.TwirlCompiler
 import java.io.File
@@ -6,7 +6,7 @@ import scala.io.Codec
 import scala.io.Source
 import scala.reflect.internal.AnnotationInfos
 
-object TemplateCompiler {
+object CommandLineTwirlTemplateCompiler {
 
   case class Config(
     sources: Seq[(File, File)] = Seq.empty[(File, File)],
@@ -16,7 +16,7 @@ object TemplateCompiler {
   )
 
   val parser = new scopt.OptionParser[Config]("scopt") {
-    head("Lucid Twirl Template Compiler", "0.1")
+    head("Twirl Template Compiler", "0.1")
 
     arg[File]("<outputDirectory>").required().action { (value, config) =>
       config.copy(generatedDirectory = value)

@@ -1,0 +1,55 @@
+load("@io_bazel_rules_scala//scala:scala.bzl", "scala_specs2_junit_test")
+load("//twirl:twirl.bzl", "twirl_templates")
+
+twirl_templates(
+  name = "twirl-test-templates-basic",
+  visibility = ["//visibility:public"],
+  source_directory = "twirl-templates",
+  srcs = [
+    "twirl-templates/twirl/com/foo/views/hello.scala.html",
+    "twirl-templates/twirl/com/foo/views/hello.scala.txt",
+    "twirl-templates/twirl/com/foo/views/hello.scala.xml",
+    "twirl-templates/twirl/com/foo/views/hello.scala.js",
+  ],
+)
+
+twirl_templates(
+  name = "twirl-test-templates-additional-imports",
+  visibility = ["//visibility:public"],
+  source_directory = "twirl-templates",
+  srcs = [
+    "twirl-templates/twirl/com/foo/views/addImports.scala.txt",
+  ],
+  additional_imports = ["rulestwirl.test.Person"],
+)
+
+twirl_templates(
+  name = "twirl-test-templates-custom-formatter",
+  visibility = ["//visibility:public"],
+  source_directory = "twirl-templates",
+  srcs = [
+    "twirl-templates/twirl/com/foo/views/customFormatter.scala.txt",
+  ],
+  additional_imports = ["rulestwirl.test.Person"],
+  template_formats = {
+    "txt": "rulestwirl.test.StrangeTxtFormat"
+  },
+)
+
+scala_specs2_junit_test(
+  name = "twirl-compiler-test",
+  srcs = [
+    "TwirlCompilerTest.scala",
+    "Person.scala",
+    "StrangeTxtFormatter.scala",
+    ":twirl-test-templates-basic",
+    ":twirl-test-templates-additional-imports",
+    ":twirl-test-templates-custom-formatter",
+  ],
+  deps = [
+    "@scala//:scala-xml",
+    "@com_typesafe_play_twirl_api_2_11//jar",
+    "@org_apache_commons_commons_lang3//jar",
+  ],
+  suffixes = ["Test"],
+)

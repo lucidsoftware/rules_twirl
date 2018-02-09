@@ -1,0 +1,1 @@
+@(name: String)@person.name, age: @person.age
