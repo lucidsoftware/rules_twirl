@@ -28,7 +28,7 @@ def _format_import_args(imports):
   return ["--additionalImport={}".format(i) for i in imports]
 
 def _format_template_format_args(template_formats):
-  return ["--templateFormat:{}={}".format(format, formatterType) for format, formatterType in template_formats.items()]
+  return ["--templateFormat:{}={}".format(format, formatter_type) for format, formatter_type in template_formats.items()]
 
 def _impl(ctx):
   gendir_path = gendir_base_path + "/" + _sanitize_string_for_usage(ctx.attr.name)
