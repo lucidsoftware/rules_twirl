@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 
-# You need write access to origin for this script to work
-#
+# Used to update the skydoc github pages site from travis
 set -e
+
+eval "$(ssh-agent -s)"
+chmod 600 ./lemur_rsa
+ssh-add ./lemur_rsa
 
 skydoc_file="twirl-compiler-docs-skydoc.zip"
 rm -rf docs

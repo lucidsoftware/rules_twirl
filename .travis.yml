@@ -45,11 +45,7 @@ deploy:
   - provider:
     skip_cleanup: true
     script:
-    - |
-      eval "$(ssh-agent -s)"
-      chmod 600 ./lemur_rsa
-      ssh-add ./lemur_rsa
-      ./tools/ci-skydoc-update.sh
+      - ./tools/ci-skydoc-update.sh
 stages:
   - name: before_deploy
     if: branch = master
