@@ -7,7 +7,7 @@ set -e
 skydoc_file="twirl-compiler-docs-skydoc.zip"
 rm -rf docs
 mkdir docs
-unzip "$(bazel --config=ci info)/twirl/${skydoc_file} -d docs/"
+unzip "$(bazel info)/twirl/${skydoc_file} -d docs/"
 
 git config user.email "ops+lucidlemur@lucidchart.com"
 git config user.name "Lucid Lemur"

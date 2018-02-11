@@ -38,7 +38,7 @@ before_install:
 script:
   - ./tools/skylint.sh
   - ./test/run_all_tests.sh ci
-  - bazel build --config=ci twirl:twirl-compiler-docs
+  - bazel build twirl:twirl-compiler-docs
 before_deploy:
   - openssl aes-256-cbc -K $encrypted_8def51079f4f_key -iv $encrypted_8def51079f4f_iv -in tools/lemur_rsa.enc -out lemur_rsa -d
 deploy:
