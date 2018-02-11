@@ -17,4 +17,4 @@ git config user.name "Lucid Lemur"
 git remote add origin-pages git@github.com:lucidsoftware/rules_twirl.git
 git add "${docs_folder}"
 git commit -m "Travis #$TRAVIS_BUILD_NUMBER updating doc. [skip ci]"
-git push --force origin-pages $(git subtree split --prefix ${docs_folder}):gh-pages
+git push --force origin-pages $(git subtree split --prefix ${docs_folder}):gh-pages >/dev/null 2>&1

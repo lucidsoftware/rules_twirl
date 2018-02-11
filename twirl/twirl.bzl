@@ -102,8 +102,8 @@ twirl_templates = rule(
 """Compiles Twirl templates to Scala sources files.
 
 Args:
-  source_directory: Directories where Twirl template files will be found.
-  srcs: The actual template files contained in the source_directories.
+  source_directory: Directories where Twirl template files are located.
+  srcs: The actual template files contained in the source_directory.
   additional_imports: Additional imports to import to the Twirl templates.
   include_play_imports: If true, include the imports the Play project includes by default.
   template_formats: Formatter types for file extensions.
