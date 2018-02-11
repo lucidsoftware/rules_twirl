@@ -16,4 +16,4 @@ git config user.email "ops+lucidlemur@lucidchart.com"
 git config user.name "Lucid Lemur"
 git add "${docs_folder}"
 git commit -m "Travis #$TRAVIS_BUILD_NUMBER updating doc. [skip ci]"
-git subtree push --prefix ${docs_folder} origin gh-pages >/dev/null 2>&1
+git subtree push --prefix ${docs_folder} origin gh-pages
