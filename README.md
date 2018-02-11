@@ -1,4 +1,4 @@
-# Twirl Template rules for Bazel
+# Twirl Template Rules for Bazel
 
 | Travis | Doc
 | --- | --- |
