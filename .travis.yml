@@ -30,7 +30,7 @@ before_install:
     else
       URL="https://github.com/bazelbuild/bazel/releases/download/${V}/bazel-${V}-installer-${OS}-x86_64.sh"
     fi
-    wget -O -nv install.sh "${URL}"
+    wget -nv -O install.sh "${URL}"
     chmod +x install.sh
     ./install.sh --user
     rm -f install.sh
