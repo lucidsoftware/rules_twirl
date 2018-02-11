@@ -7,10 +7,9 @@ eval "$(ssh-agent -s)"
 chmod 600 ./lemur_rsa
 ssh-add ./lemur_rsa
 
-skydoc_file="twirl-compiler-docs-skydoc.zip"
 rm -rf docs
 mkdir docs
-unzip "$(bazel info)/twirl/${skydoc_file} -d docs/"
+unzip $(bazel info bazel-bin)/twirl/twirl-compiler-docs-skydoc.zip -d $(bazel info workspace)/docs/
 
 git config user.email "ops+lucidlemur@lucidchart.com"
 git config user.name "Lucid Lemur"
