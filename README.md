@@ -1,6 +1,6 @@
 # Twirl Template rules for Bazel
 
-| Travis | Skydoc
+| Travis | Doc
 | --- | --- |
 | [![Build Status](https://travis-ci.org/lucidsoftware/rules_twirl.svg)](https://travis-ci.org/lucidsoftware/rules_twirl) | [Skydoc](http://lucidsoftware.github.io/rules_twirl/) |
 
