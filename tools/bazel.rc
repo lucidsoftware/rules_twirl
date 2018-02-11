@@ -1,7 +1,13 @@
-common:ci --color=no
+startup:ci --output_base=$HOME/.cache/bazel
+startup:ci --batch
+startup:ci --host_jvm_args=-Xmx2500m
+startup:ci --host_jvm_args=-Xms2500m
+common:ci --color=yes
 build:ci --verbose_failures
 build:ci --sandbox_debug
 build:ci --spawn_strategy=standalone
 build:ci --genrule_strategy=standalone
 test:ci --test_strategy=standalone
 test:ci --test_output=errors
+test:ci --local_resources=2048,0.5,1.0
+test:ci --experimental_repository_cache=\"$HOME/.bazel_repository_cache\""
