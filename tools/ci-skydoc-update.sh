@@ -14,6 +14,7 @@ unzip $(bazel info bazel-bin)/twirl/twirl-compiler-docs-skydoc.zip -d $(bazel in
 
 git config user.email "ops+lucidlemur@lucidchart.com"
 git config user.name "Lucid Lemur"
+git remote add origin-pages git@github.com:lucidsoftware/rules_twirl.git
 git add "${docs_folder}"
 git commit -m "Travis #$TRAVIS_BUILD_NUMBER updating doc. [skip ci]"
-git subtree push --prefix ${docs_folder} origin gh-pages
+git subtree push --prefix ${docs_folder} origin-pages gh-pages
