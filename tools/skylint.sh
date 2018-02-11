@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 skylint_path=src/tools/skylark/java/com/google/devtools/skylark/skylint
 bazel build @io_bazel//${skylint_path}:Skylint \
