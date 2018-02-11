@@ -32,7 +32,7 @@ http://lucidsoftware.github.io/rules_twirl/
 Skydoc is automatically updated on build merged into the master branch. To update the documentation, please submit a pull request. The doc will be updated when it is merged.
 
 ### Deploying documentation
-The Skydoc site for rules_twirl is deployed from the `gh-pages` branch. That branch is deployed with each build of the master branch.
+The Skydoc site for `rules_twirl` is deployed from the `gh-pages` branch. That branch is deployed with each build of the master branch.
 
 ## Usage
 The `twirl_templates` rule compiles Twirl templates to a source jar that can be used with the `rules_scala` rules. For example,
