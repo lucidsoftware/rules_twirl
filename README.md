@@ -5,7 +5,7 @@
 | [![Build Status](https://travis-ci.org/lucidsoftware/rules_twirl.svg)](https://travis-ci.org/lucidsoftware/rules_twirl) | [Skydoc](http://lucidsoftware.github.io/rules_twirl/) |
 
 ## Overview
-These rules compile [Twirl](https://github.com/playframework/twirl) templates to [Scala](http://www.scala-lang.org/), so they can be used with the [`rules_scala`](https://github.com/bazelbuild/rules_scala).
+These rules compile [Twirl](https://github.com/playframework/twirl) templates to [Scala](http://www.scala-lang.org/), so they can be used with [`rules_scala`](https://github.com/bazelbuild/rules_scala).
 
 For more information about Twirl templates, see [the Play Twirl documentation](https://www.playframework.com/documentation/latest/ScalaTemplates#the-template-engine).
 
@@ -32,7 +32,7 @@ http://lucidsoftware.github.io/rules_twirl/
 Skydoc is automatically updated on build merged into the master branch. To update the documentation, please submit a pull request. The doc will be updated when it is merged.
 
 ### Deploying documentation
-http://lucidsoftware.github.io/rules_twirl/ is deployed from the `gh-pages` branch, which is updated with each build on the master branch.
+The Skydoc site for rules_twirl is deployed from the `gh-pages` branch. That branch is deployed with each build of the master branch.
 
 ## Usage
 The `twirl_templates` rule compiles Twirl templates to a source jar that can be used with the `rules_scala` rules. For example,
