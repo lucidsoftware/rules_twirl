@@ -1,13 +1,13 @@
 # Twirl Template rules for Bazel
 
-| Travis |
-| --- |
-| [![Build Status](https://travis-ci.org/lucidsoftware/rules_twirl.svg)](https://travis-ci.org/lucidsoftware/rules_twirl) |
+| Travis | Skydoc
+| --- | --- |
+| [![Build Status](https://travis-ci.org/lucidsoftware/rules_twirl.svg)](https://travis-ci.org/lucidsoftware/rules_twirl) | [Skydoc](http://lucidsoftware.github.io/rules_twirl/) |
 
 ## Overview
-These rules compile [Twirl](https://github.com/playframework/twirl) templates to [Scala](http://www.scala-lang.org/), so they can be used with the [Bazel Scala rules](https://github.com/bazelbuild/rules_scala)
+These rules compile [Twirl](https://github.com/playframework/twirl) templates to [Scala](http://www.scala-lang.org/), so they can be used with the [`rules_scala`](https://github.com/bazelbuild/rules_scala).
 
-For more information about Twirl templates, see [the Play Twirl documentation](https://www.playframework.com/documentation/latest/ScalaTemplates#the-template-engine)
+For more information about Twirl templates, see [the Play Twirl documentation](https://www.playframework.com/documentation/latest/ScalaTemplates#the-template-engine).
 
 ## Installation
 Create a file called at the top of your repository named `WORKSPACE` and add the following snippet to it.
@@ -26,7 +26,7 @@ http_archive(
 This installs `rules_twirl` to your `WORKSPACE` at the specified commit. Update the commit as needed.
 
 ## Skydoc Documentation
-Documentation for the Bazel rules provided by this repo can be found here http://lucidsoftware.github.io/rules_twirl/
+http://lucidsoftware.github.io/rules_twirl/
 
 ### Updating Skydoc
 Skydoc is automatically updated on build merged into the master branch. To update the documentation, please submit a pull request. The doc will be updated when it is merged.
@@ -56,10 +56,10 @@ scala_binary(
 )
 ```
 
-See the [Skydoc documentation](http://lucidsoftware.github.io/rules_twirl/) for the full list of options for `twirl_templates`.
+See the [Skydoc documentation](https://lucidsoftware.github.io/rules_twirl/twirl/twirl.html#twirl_templates) for the full list of options for `twirl_templates`.
 
 ### Use with the Play Framework
-`twirl_templates` can be used with the [Play Routes Rules](https://github.com/lucidsoftware/rules_play_routes) to run a Play Framework Service. For example
+`twirl_templates` can be used with the [`rules_play_routes`](https://github.com/lucidsoftware/rules_play_routes) to run a Play Framework Service. For example
 
 ```python
 twirl_templates(
@@ -95,6 +95,7 @@ scala_binary(
   ],
   deps = [...],
 )
+```
 
 ## Development
 ### Command Line Twirl Compiler
@@ -123,7 +124,8 @@ bazel test //test/...
 ### CI
 The CI config in `tools/bazel.rc` and other options in `.bazelrc.travis` are used during CI builds.
 
+#### Skylint
 [Skylint](https://github.com/bazelbuild/bazel/blob/master/site/docs/skylark/skylint.md) is run during CI builds. To run it locally use
-````bash
+```bash
 tools/skylint.sh
 ```
