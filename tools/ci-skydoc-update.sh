@@ -7,12 +7,13 @@ eval "$(ssh-agent -s)"
 chmod 600 ./lemur_rsa
 ssh-add ./lemur_rsa
 
-rm -rf docs
-mkdir docs
-unzip $(bazel info bazel-bin)/twirl/twirl-compiler-docs-skydoc.zip -d $(bazel info workspace)/docs/
+docs_folder=docs
+rm -rf ${docs_folder}
+mkdir ${docs_folder}
+unzip $(bazel info bazel-bin)/twirl/twirl-compiler-docs-skydoc.zip -d $(bazel info workspace)/${docs_folder}/
 
 git config user.email "ops+lucidlemur@lucidchart.com"
 git config user.name "Lucid Lemur"
-git add "docs/"
+git add "${docs_folder}"
 git commit -m "Travis #$TRAVIS_BUILD_NUMBER updating doc. [skip ci]"
-git push --force origin gh-pages >/dev/null 2>&1
+git subtree push --prefix ${docs_folder} origin gh-pages >/dev/null 2>&1
