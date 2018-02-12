@@ -99,7 +99,7 @@ scala_binary(
 
 ## Development
 ### Command Line Twirl Compiler
-This project consists of the Twirl bazel rules and a command line Twirl compiler. The command line compiler can be built with
+This project consists of the Twirl Bazel rules and a command line Twirl compiler. The command line compiler can be built with
 ```bash
 bazel build //twirl-compiler
 ```
@@ -113,7 +113,7 @@ bazel run //twirl-compiler
 All tests can be run using
 
 ```bash
-tests/run_all_tests.sh
+test/run_all_tests.sh
 ```
 
 They can also be run using
