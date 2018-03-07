@@ -3,8 +3,6 @@ package rulestwirl.twirl
 import play.twirl.compiler.TwirlCompiler
 import java.io.File
 import scala.io.Codec
-import scala.io.Source
-import scala.reflect.internal.AnnotationInfos
 
 object CommandLineTwirlTemplateCompiler {
 

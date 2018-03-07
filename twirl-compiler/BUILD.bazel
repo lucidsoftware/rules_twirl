@@ -4,15 +4,18 @@ scala_binary(
   name = "twirl-compiler",
   srcs = glob(["src/main/**/*.scala"]),
   visibility = ["//visibility:public"],
+  scalacopts = ["-Ywarn-unused-import"],
   main_class = "rulestwirl.twirl.CommandLineTwirlTemplateCompiler",
   deps = [
     "@com_github_scopt_scopt_2_11//jar",
-    "@com_typesafe_play_twirl_api_2_11//jar",
     "@com_typesafe_play_twirl_compiler_2_11//jar",
     "@com_typesafe_play_twirl_parser_2_11//jar",
-    "@scala//:scala-compiler",
     "@scala//:scala-library",
     "@scala//:scala-parser-combinators",
     "@scala//:scala-reflect",
   ],
+  runtime_deps = [
+    "@com_typesafe_play_twirl_api_2_11//jar",
+    "@scala//:scala-compiler",
+  ]
 )
