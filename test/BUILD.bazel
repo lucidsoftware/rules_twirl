@@ -1,4 +1,4 @@
-load("@io_bazel_rules_scala//scala:scala.bzl", "scala_specs2_junit_test")
+load("@rules_scala_annex//rules:scala.bzl", scala_test = "annex_scala_test")
 load("//twirl:twirl.bzl", "twirl_templates")
 
 twirl_templates(
@@ -36,7 +36,7 @@ twirl_templates(
   },
 )
 
-scala_specs2_junit_test(
+scala_test(
   name = "twirl-compiler-test",
   srcs = [
     "TwirlCompilerTest.scala",
@@ -47,9 +47,9 @@ scala_specs2_junit_test(
     ":twirl-test-templates-custom-formatter",
   ],
   deps = [
-    "@scala//:scala-xml",
     "@com_typesafe_play_twirl_api_2_11//jar",
-    "@org_apache_commons_commons_lang3//jar",
+    "@org_specs2_specs2_common_2_11//jar",
+    "@org_specs2_specs2_core_2_11//jar",
+    "@org_specs2_specs2_matcher_2_11//jar",
   ],
-  suffixes = ["Test"],
 )

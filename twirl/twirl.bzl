@@ -6,6 +6,8 @@ Bazel rules for running the [Twirl Template Compiler](https://github.com/playfra
 gendir_base_path = "main/twirl"
 
 play_imports = [
+  "play.twirl.api._",
+  "play.twirl.api.TemplateMagic._",
   "models._",
   "controllers._",
   "play.api.i18n._",

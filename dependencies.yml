@@ -1,0 +1,36 @@
+options:
+  languages:
+    - java
+    - scala:2.11.11
+  namePrefix: twirl_
+  resolvers:
+    - id: central
+      type: default
+      url: http://central.maven.org/maven2/
+  transtivity: deps
+
+dependencies:
+  com.github.scopt:
+    scopt:
+      lang: scala
+      version: 3.7.0
+  com.typesafe.play:
+    twirl-compiler:
+      lang: scala
+      version: 1.1.1
+  org.scala-lang.modules:
+    scala-parser-combinators:
+      lang: scala
+      version: "1.1.0"
+
+replacements:
+  org.scala-lang:
+    scala-compiler:
+      lang: java
+      target: '@scala_scala_compiler//jar'
+    scala-library:
+      lang: java
+      target: '@scala_scala_library//jar'
+    scala-reflect:
+      lang: java
+      target: '@scala_scala_reflect//jar'

@@ -1,4 +1,4 @@
-load("@io_bazel_rules_scala//scala:scala.bzl", "scala_binary")
+load("@rules_scala_annex//rules:scala.bzl", scala_binary = "annex_scala_binary")
 
 scala_binary(
   name = "twirl-compiler",
@@ -7,15 +7,14 @@ scala_binary(
   scalacopts = ["-Ywarn-unused-import"],
   main_class = "rulestwirl.twirl.CommandLineTwirlTemplateCompiler",
   deps = [
-    "@com_github_scopt_scopt_2_11//jar",
-    "@com_typesafe_play_twirl_compiler_2_11//jar",
-    "@com_typesafe_play_twirl_parser_2_11//jar",
-    "@scala//:scala-library",
-    "@scala//:scala-parser-combinators",
-    "@scala//:scala-reflect",
+    "@twirl_com_github_scopt_scopt_2_11//jar",
+    "@twirl_com_typesafe_play_twirl_compiler_2_11//jar",
+    "@twirl_org_scala_lang_modules_scala_parser_combinators_2_11//jar",
+  ],
+  deps_used_whitelist = [
+    "@twirl_org_scala_lang_modules_scala_parser_combinators_2_11//jar",
   ],
   runtime_deps = [
-    "@com_typesafe_play_twirl_api_2_11//jar",
-    "@scala//:scala-compiler",
-  ]
+    "@scala_scala_reflect//jar",
+  ],
 )

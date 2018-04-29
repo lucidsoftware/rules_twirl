@@ -1,21 +1,16 @@
 workspace(name = "io_bazel_rules_twirl")
 
-rules_scala_version = "827124ad15cfc9da87506de989f6ef2ba70ec0c6" # update this as needed
 http_archive(
-  name = "io_bazel_rules_scala",
-  url = "https://github.com/bazelbuild/rules_scala/archive/%s.zip"%rules_scala_version,
-  type = "zip",
-  strip_prefix= "rules_scala-%s" % rules_scala_version
+    name = "rules_scala_annex",
+    sha256 = "3d3e01d7a74c6e0b8ba0a5d8d56d0c6e266a7e3ec03894bb82957e05c490f22a",
+    strip_prefix = "rules_scala_annex-03ad6af70ae95dbbcfa1882cf7cf7fc487668c1b",
+    url = "https://github.com/lucidsoftware/rules_scala_annex/archive/03ad6af70ae95dbbcfa1882cf7cf7fc487668c1b.zip",
 )
 
-load("@io_bazel_rules_scala//scala:scala.bzl", "scala_repositories")
-scala_repositories()
-
-load("@io_bazel_rules_scala//specs2:specs2_junit.bzl", "specs2_junit_repositories")
-specs2_junit_repositories()
-
-load("@io_bazel_rules_scala//scala:toolchains.bzl", "scala_register_toolchains")
-scala_register_toolchains()
+load("@rules_scala_annex//rules/scala:workspace.bzl", "annex_scala_register_toolchains", "annex_scala_repository", "annex_scala_repositories")
+annex_scala_repositories()
+annex_scala_register_toolchains()
+annex_scala_repository("scala", ("org.scala-lang", "2.11.11"), "@compiler_bridge_2_11//:src")
 
 git_repository(
     name = "io_bazel_rules_sass",
@@ -50,32 +45,8 @@ http_archive(
   urls = ["https://github.com/google/protobuf/archive/v3.5.0.zip"],
 )
 
-maven_jar(
-  name = "com_github_scopt_scopt_2_11",
-  artifact = "com.github.scopt:scopt_2.11:jar:3.7.0",
-  sha1 = "2f4b95257d082feb9e2a353a9a669c766b850931",
-)
+load(":workspace.bzl", "twirl_repositories")
+twirl_repositories()
 
-maven_jar(
-  name = "com_typesafe_play_twirl_api_2_11",
-  artifact = "com.typesafe.play:twirl-api_2.11:1.1.1",
-  sha1 = "b029d9500caec7fe30f9a485fc654ee82d40d404",
-)
-
-maven_jar(
-  name = "com_typesafe_play_twirl_compiler_2_11",
-  artifact = "com.typesafe.play:twirl-compiler_2.11:1.1.1",
-  sha1 = "c52e000cfe1895cd1dc9fb5c0d4ac5bbd73713cc",
-)
-
-maven_jar(
-  name = "com_typesafe_play_twirl_parser_2_11",
-  artifact = "com.typesafe.play:twirl-parser_2.11:1.1.1",
-  sha1 = "8af782249d76c70d411305f94eff19c9906c43af",
-)
-
-maven_jar(
-  name = "org_apache_commons_commons_lang3",
-  artifact = "org.apache.commons:commons-lang3:3.4",
-  sha1 = "5fe28b9518e58819180a43a850fbc0dd24b7c050",
-)
+load(":test_workspace.bzl", "twirl_test_repositories")
+twirl_test_repositories()

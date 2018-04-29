@@ -1,8 +1,8 @@
 package rulestwirl.test
 
-import org.specs2.mutable.SpecificationWithJUnit
+import org.specs2.mutable.Specification
 
-class TwirlCompilerTest extends SpecificationWithJUnit {
+class TwirlCompilerTest extends Specification {
 
   "Twirl Template Compiler when run through Bazel" should {
     "Compile html Twirl Templates" in {
