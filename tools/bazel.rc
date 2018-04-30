@@ -2,6 +2,8 @@ import %workspace%/tools/ignore.rc
 
 startup --expand_configs_in_place
 
+common --strategy=ScalaCompile=worker
+
 common:ci --color=yes
 build:ci --verbose_failures
 build:ci --sandbox_debug

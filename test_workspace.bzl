@@ -1,4 +1,5 @@
 load("@bazel_tools//tools/build_defs/repo:java.bzl", "java_import_external")
+load("@rules_scala_annex//rules/scala:workspace.bzl", "annex_scala_repository")
 load("//3rdparty:test_maven.bzl", "list_dependencies")
 
 def twirl_test_repositories():

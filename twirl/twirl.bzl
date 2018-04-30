@@ -17,70 +17,48 @@ play_imports = [
   "play.api.data._",
 ]
 
-def _sanitize_string_for_usage(s):
-  res_array = []
-  for c in s:
-    if c.isalnum() or c == ".":
-      res_array.append(c)
-    else:
-      res_array.append("_")
-  return "".join(res_array)
+def _format_map_arg(format):
+  return "{}={}".format(*format)
 
-def _format_import_args(imports):
-  return ["--additionalImport={}".format(i) for i in imports]
-
-def _format_template_format_args(template_formats):
-  return ["--templateFormat:{}={}".format(format, formatter_type) for format, formatter_type in template_formats.items()]
+def _format_map_args(formats):
+  return [_format_map_arg(format) for format in formats]
 
 def _impl(ctx):
-  gendir_path = gendir_base_path + "/" + _sanitize_string_for_usage(ctx.attr.name)
-  gendir = ctx.actions.declare_directory(gendir_path)
-  args = [gendir.path] + ["{},{}".format(f.path, ctx.file.source_directory.path) for f in ctx.files.srcs]
+  imports = play_imports + ctx.attr.additional_imports if ctx.attr.include_play_imports else ctx.attr.additional_imports
 
-  if ctx.attr.include_play_imports:
-    args = args + _format_import_args(play_imports)
+  outputs = []
+  for src in ctx.files.srcs:
+    parts = src.short_path.split(".")
+    output = ctx.actions.declare_file("gen/{}/{}".format(ctx.label.name, ".".join(parts[:-2] + [parts[-1], parts[-2]])))
 
-  args = args + _format_import_args(ctx.attr.additional_imports)
+    args = ctx.actions.args()
+    if hasattr(args, "add_all"): # Bazel 0.13.0+
+      args.add_all(imports, format_each = "--additionalImport=%s")
+      args.add_all(ctx.attr.template_formats.items(), format_each = "--templateFormat=%s", map_each = _format_map_arg)
+    else:
+      args.add(imports, format = "--additionalImport=%s")
+      args.add(ctx.attr.template_formats.items(), format = "--templateFormat=%s", map_fn = _format_map_args)
+    args.add(output)
+    args.add(ctx.file.source_directory.path)
+    args.add(src)
+    args.set_param_file_format("multiline")
+    args.use_param_file("@%s", use_always = True)
 
-  args = args + _format_template_format_args(ctx.attr.template_formats)
+    ctx.actions.run(
+      inputs = [src],
+      outputs = [output],
+      arguments = [args],
+      mnemonic = "TwirlCompile",
+      execution_requirements = {"supports-workers": "1"},
+      progress_message = "Compiling twirl template",
+      executable = ctx.executable._twirl_compiler,
+    )
 
-  template_outputs = _outputs(ctx, gendir_path)
+    outputs.append(output)
 
-  ctx.actions.run(
-    inputs = ctx.files.srcs,
-    outputs = [gendir] + template_outputs,
-    arguments = args,
-    progress_message = "Compiling twirl templates",
-    executable = ctx.executable._twirl_compiler,
-  )
-
-  ctx.actions.run(
-    inputs = template_outputs,
-    outputs = [ctx.outputs.srcjar],
-    arguments = ["cfM"] + [ctx.outputs.srcjar.path] + [f.path for f in template_outputs],
-    progress_message = "Bundling compiled twirl templates into srcjar",
-    executable = "jar",
-  )
-
-
-def _outputs(ctx, gendir_path):
-  template_files = []
-
-  for input_file in ctx.files.srcs:
-    source_directory = ctx.file.source_directory.path
-    source_directory_end = input_file.dirname.find(source_directory)
-
-    template_path = input_file.dirname[source_directory_end + len(source_directory):]
-    template_path = template_path.split("/views")
-
-    left_dot = input_file.basename.find(".")
-    template_name = input_file.basename[:left_dot]
-    template_path = gendir_path + template_path[0] + "/" + "views/" + input_file.extension + "/" + template_path[1] + "/" + template_name + ".template.scala"
-
-    template_files.append(ctx.actions.declare_file(template_path))
-
-  return template_files
-
+  return [
+    DefaultInfo(files = depset(outputs))
+  ]
 
 twirl_templates = rule(
   implementation = _impl,
@@ -97,9 +75,6 @@ twirl_templates = rule(
       default = Label("//twirl-compiler"),
     )
   },
-  outputs = {
-    "srcjar": "twirl_%{name}.srcjar",
-  }
 )
 """Compiles Twirl templates to Scala sources files.
 

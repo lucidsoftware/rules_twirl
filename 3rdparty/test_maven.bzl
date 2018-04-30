@@ -32,42 +32,21 @@ def list_dependencies():
             "import_args": {
                 "default_visibility": [ "//visibility:public" ],
                 "exports": [
-                    "@org_apache_commons_commons_lang3",
                     "@org_scala_lang_modules_scala_xml_2_11",
                     "@scala_scala_library//jar"
                 ],
-                "jar_sha256": "8cbc373640e2dab269bc0d4eada8fd47e9a06bb573ea9b7748eada58188547fa",
+                "jar_sha256": "c42a3ca5866b783409998d90738ced7ae33506ed20022dae7f26438ded7d6dc5",
                 "jar_urls": [
-                    "http://central.maven.org/maven2/com/typesafe/play/twirl-api_2.11/1.1.1/twirl-api_2.11-1.1.1.jar"
+                    "http://central.maven.org/maven2/com/typesafe/play/twirl-api_2.11/1.2.1/twirl-api_2.11-1.2.1.jar"
                 ],
                 "licenses": [ "notice" ],
                 "name": "com_typesafe_play_twirl_api_2_11",
-                "srcjar_sha256": "aa59cc9ff4a00e95330f8e8fcb4d4489d168bde4c2c433e5741428d62971d5e8",
+                "srcjar_sha256": "c933aea8dec927643b112a7ef29e31b071b077d2d473abcc14317bc5685f139e",
                 "srcjar_urls": [
-                    "http://central.maven.org/maven2/com/typesafe/play/twirl-api_2.11/1.1.1/twirl-api_2.11-1.1.1-sources.jar"
+                    "http://central.maven.org/maven2/com/typesafe/play/twirl-api_2.11/1.2.1/twirl-api_2.11-1.2.1-sources.jar"
                 ]
             },
             "lang": "scala"
-        },
-        {
-            "bind_args": {
-                "actual": "@org_apache_commons_commons_lang3",
-                "name": "jar/org/apache/commons/commons_lang3"
-            },
-            "import_args": {
-                "default_visibility": [ "//visibility:public" ],
-                "jar_sha256": "734c8356420cc8e30c795d64fd1fcd5d44ea9d90342a2cc3262c5158fbc6d98b",
-                "jar_urls": [
-                    "http://central.maven.org/maven2/org/apache/commons/commons-lang3/3.4/commons-lang3-3.4.jar"
-                ],
-                "licenses": [ "notice" ],
-                "name": "org_apache_commons_commons_lang3",
-                "srcjar_sha256": "4709f16a9e0f8fd83ae155083d63044e23045aac8f6f0183a2db09f492491b12",
-                "srcjar_urls": [
-                    "http://central.maven.org/maven2/org/apache/commons/commons-lang3/3.4/commons-lang3-3.4-sources.jar"
-                ]
-            },
-            "lang": "java"
         },
         {
             "bind_args": {
@@ -90,7 +69,7 @@ def list_dependencies():
             "lang": "java"
         },
         # duplicates in org.scala-lang.modules:scala-xml_2.11 promoted to 1.0.6
-        # - com.typesafe.play:twirl-api_2.11:1.1.1 wanted version 1.0.1
+        # - com.typesafe.play:twirl-api_2.11:1.2.1 wanted version 1.0.5
         # - org.specs2:specs2-common_2.11:3.9.5 wanted version 1.0.6
         {
             "bind_args": {

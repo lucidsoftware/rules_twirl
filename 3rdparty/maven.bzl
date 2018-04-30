@@ -26,129 +26,108 @@ def list_dependencies():
     return [
         {
             "bind_args": {
-                "actual": "@twirl_com_github_scopt_scopt_2_11",
-                "name": "jar/twirl_com/github/scopt/scopt_2_11"
+                "actual": "@twirl_com_github_scopt_scopt_2_12",
+                "name": "jar/twirl_com/github/scopt/scopt_2_12"
             },
             "import_args": {
                 "default_visibility": [ "//visibility:public" ],
-                "exports": [ "@scala_scala_library//jar" ],
-                "jar_sha256": "cc05b6ac379f9b45b6d832b7be556312039f3d57928b62190d3dcd04f34470b5",
+                "exports": [ "@twirl_scala_scala_library//jar" ],
+                "jar_sha256": "1105ff2819f267e06b9a84843231a9fd7a69817c49e5d67167cb601e47ce2c56",
                 "jar_urls": [
-                    "http://central.maven.org/maven2/com/github/scopt/scopt_2.11/3.7.0/scopt_2.11-3.7.0.jar"
+                    "http://central.maven.org/maven2/com/github/scopt/scopt_2.12/3.7.0/scopt_2.12-3.7.0.jar"
                 ],
                 "licenses": [ "notice" ],
-                "name": "twirl_com_github_scopt_scopt_2_11",
-                "srcjar_sha256": "1c9111bafb55ec192d04898123199e51440e1633118b112d0c14a611491805ef",
+                "name": "twirl_com_github_scopt_scopt_2_12",
+                "srcjar_sha256": "5d642a8f96c9e0243d15badd519ffb2a7f2786ce70d5e5c21003bb9b70ff507d",
                 "srcjar_urls": [
-                    "http://central.maven.org/maven2/com/github/scopt/scopt_2.11/3.7.0/scopt_2.11-3.7.0-sources.jar"
+                    "http://central.maven.org/maven2/com/github/scopt/scopt_2.12/3.7.0/scopt_2.12-3.7.0-sources.jar"
                 ]
             },
             "lang": "scala"
         },
         {
             "bind_args": {
-                "actual": "@twirl_com_typesafe_play_twirl_api_2_11",
-                "name": "jar/twirl_com/typesafe/play/twirl_api_2_11"
+                "actual": "@twirl_com_typesafe_play_twirl_api_2_12",
+                "name": "jar/twirl_com/typesafe/play/twirl_api_2_12"
             },
             "import_args": {
                 "default_visibility": [ "//visibility:public" ],
-                "exports": [ "@twirl_org_apache_commons_commons_lang3" ],
-                "jar_sha256": "8cbc373640e2dab269bc0d4eada8fd47e9a06bb573ea9b7748eada58188547fa",
+                "jar_sha256": "a49f55199ad9e3b19a5dc51c812edca5d270ee8ca7d763a793a0e462fc3dbf61",
                 "jar_urls": [
-                    "http://central.maven.org/maven2/com/typesafe/play/twirl-api_2.11/1.1.1/twirl-api_2.11-1.1.1.jar"
+                    "http://central.maven.org/maven2/com/typesafe/play/twirl-api_2.12/1.2.1/twirl-api_2.12-1.2.1.jar"
                 ],
                 "licenses": [ "notice" ],
-                "name": "twirl_com_typesafe_play_twirl_api_2_11",
-                "srcjar_sha256": "aa59cc9ff4a00e95330f8e8fcb4d4489d168bde4c2c433e5741428d62971d5e8",
+                "name": "twirl_com_typesafe_play_twirl_api_2_12",
+                "srcjar_sha256": "37115905a4a62ff85f1cb324407c672dbb5710a7b938c724fad418a31317d01a",
                 "srcjar_urls": [
-                    "http://central.maven.org/maven2/com/typesafe/play/twirl-api_2.11/1.1.1/twirl-api_2.11-1.1.1-sources.jar"
+                    "http://central.maven.org/maven2/com/typesafe/play/twirl-api_2.12/1.2.1/twirl-api_2.12-1.2.1-sources.jar"
                 ]
             },
             "lang": "java"
         },
         {
             "bind_args": {
-                "actual": "@twirl_com_typesafe_play_twirl_compiler_2_11",
-                "name": "jar/twirl_com/typesafe/play/twirl_compiler_2_11"
+                "actual": "@twirl_com_typesafe_play_twirl_compiler_2_12",
+                "name": "jar/twirl_com/typesafe/play/twirl_compiler_2_12"
             },
             "import_args": {
                 "default_visibility": [ "//visibility:public" ],
                 "exports": [
-                    "@scala_scala_compiler//jar",
-                    "@scala_scala_library//jar",
-                    "@twirl_com_typesafe_play_twirl_api_2_11",
-                    "@twirl_com_typesafe_play_twirl_parser_2_11"
+                    "@twirl_com_typesafe_play_twirl_api_2_12",
+                    "@twirl_com_typesafe_play_twirl_parser_2_12",
+                    "@twirl_scala_scala_compiler//jar",
+                    "@twirl_scala_scala_library//jar"
                 ],
-                "jar_sha256": "ec5dd61fb881fbfef487d52da9ac580bc05bff7c698c2daff16066a2250b552d",
+                "jar_sha256": "ca7ef64727d5f12bb111ae9a42f068745a3db736f8f252e8dc15308533d1445a",
                 "jar_urls": [
-                    "http://central.maven.org/maven2/com/typesafe/play/twirl-compiler_2.11/1.1.1/twirl-compiler_2.11-1.1.1.jar"
+                    "http://central.maven.org/maven2/com/typesafe/play/twirl-compiler_2.12/1.2.1/twirl-compiler_2.12-1.2.1.jar"
                 ],
                 "licenses": [ "notice" ],
-                "name": "twirl_com_typesafe_play_twirl_compiler_2_11",
-                "srcjar_sha256": "9d32e2f928c22574747c668a44eebbfd30efcf6bf993a9de95292f684b648044",
+                "name": "twirl_com_typesafe_play_twirl_compiler_2_12",
+                "srcjar_sha256": "b4ae29960bc2080f42ca5bc2b7dc52ad542c1de2901b8a0a476ec0109e5f6e92",
                 "srcjar_urls": [
-                    "http://central.maven.org/maven2/com/typesafe/play/twirl-compiler_2.11/1.1.1/twirl-compiler_2.11-1.1.1-sources.jar"
+                    "http://central.maven.org/maven2/com/typesafe/play/twirl-compiler_2.12/1.2.1/twirl-compiler_2.12-1.2.1-sources.jar"
                 ]
             },
             "lang": "scala"
         },
         {
             "bind_args": {
-                "actual": "@twirl_com_typesafe_play_twirl_parser_2_11",
-                "name": "jar/twirl_com/typesafe/play/twirl_parser_2_11"
+                "actual": "@twirl_com_typesafe_play_twirl_parser_2_12",
+                "name": "jar/twirl_com/typesafe/play/twirl_parser_2_12"
             },
             "import_args": {
                 "default_visibility": [ "//visibility:public" ],
-                "jar_sha256": "730d27857a65e9d759154a8736716135bcc95d69a810ca2ee225f2d0763842cf",
+                "jar_sha256": "38787b61b449c693251243f65a9c20c57b8ecff6be8336403084072cdf3cb504",
                 "jar_urls": [
-                    "http://central.maven.org/maven2/com/typesafe/play/twirl-parser_2.11/1.1.1/twirl-parser_2.11-1.1.1.jar"
+                    "http://central.maven.org/maven2/com/typesafe/play/twirl-parser_2.12/1.2.1/twirl-parser_2.12-1.2.1.jar"
                 ],
                 "licenses": [ "notice" ],
-                "name": "twirl_com_typesafe_play_twirl_parser_2_11",
-                "srcjar_sha256": "b5a4cd6554a5a14c414bf86b3dae33816ec32a0aaa5677874f30e2f4d6c30af5",
+                "name": "twirl_com_typesafe_play_twirl_parser_2_12",
+                "srcjar_sha256": "6ff4991cf5a5f775f9237eca5d8e905e51f1ba1abffd51ac1a7620e10ac67c04",
                 "srcjar_urls": [
-                    "http://central.maven.org/maven2/com/typesafe/play/twirl-parser_2.11/1.1.1/twirl-parser_2.11-1.1.1-sources.jar"
+                    "http://central.maven.org/maven2/com/typesafe/play/twirl-parser_2.12/1.2.1/twirl-parser_2.12-1.2.1-sources.jar"
                 ]
             },
             "lang": "java"
         },
         {
             "bind_args": {
-                "actual": "@twirl_org_apache_commons_commons_lang3",
-                "name": "jar/twirl_org/apache/commons/commons_lang3"
+                "actual": "@twirl_org_scala_lang_modules_scala_parser_combinators_2_12",
+                "name": "jar/twirl_org/scala_lang/modules/scala_parser_combinators_2_12"
             },
             "import_args": {
                 "default_visibility": [ "//visibility:public" ],
-                "jar_sha256": "734c8356420cc8e30c795d64fd1fcd5d44ea9d90342a2cc3262c5158fbc6d98b",
+                "exports": [ "@twirl_scala_scala_library//jar" ],
+                "jar_sha256": "102f2a13efae9486cb4fc01aa4eb92c0543dbd8403f825041746c689f80556e3",
                 "jar_urls": [
-                    "http://central.maven.org/maven2/org/apache/commons/commons-lang3/3.4/commons-lang3-3.4.jar"
+                    "http://central.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.12/1.1.0/scala-parser-combinators_2.12-1.1.0.jar"
                 ],
                 "licenses": [ "notice" ],
-                "name": "twirl_org_apache_commons_commons_lang3",
-                "srcjar_sha256": "4709f16a9e0f8fd83ae155083d63044e23045aac8f6f0183a2db09f492491b12",
+                "name": "twirl_org_scala_lang_modules_scala_parser_combinators_2_12",
+                "srcjar_sha256": "08d173ec107691c45a2cddf698df21600dea1c720ef3b0dbeb84b42d133d7290",
                 "srcjar_urls": [
-                    "http://central.maven.org/maven2/org/apache/commons/commons-lang3/3.4/commons-lang3-3.4-sources.jar"
-                ]
-            },
-            "lang": "java"
-        },
-        {
-            "bind_args": {
-                "actual": "@twirl_org_scala_lang_modules_scala_parser_combinators_2_11",
-                "name": "jar/twirl_org/scala_lang/modules/scala_parser_combinators_2_11"
-            },
-            "import_args": {
-                "default_visibility": [ "//visibility:public" ],
-                "exports": [ "@scala_scala_library//jar" ],
-                "jar_sha256": "5baaad7be5c6fc8142a31ab003f7ee797e488ee137d48df5d9c3c2b3fb0c5bc6",
-                "jar_urls": [
-                    "http://central.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.11/1.1.0/scala-parser-combinators_2.11-1.1.0.jar"
-                ],
-                "licenses": [ "notice" ],
-                "name": "twirl_org_scala_lang_modules_scala_parser_combinators_2_11",
-                "srcjar_sha256": "15ffea5d33cb831220573c7556ad36653599b92abebf7c5f90b7b9fc5cc275fc",
-                "srcjar_urls": [
-                    "http://central.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.11/1.1.0/scala-parser-combinators_2.11-1.1.0-sources.jar"
+                    "http://central.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.12/1.1.0/scala-parser-combinators_2.12-1.1.0-sources.jar"
                 ]
             },
             "lang": "scala"

@@ -1,32 +1,35 @@
 package rulestwirl.twirl
 
+import annex.worker.SimpleMain
 import play.twirl.compiler.TwirlCompiler
 import java.io.File
-import scala.io.Codec
+import java.nio.file.{Files, Paths}
+import scala.collection.JavaConverters._
 
-object CommandLineTwirlTemplateCompiler {
+object CommandLineTwirlTemplateCompiler extends SimpleMain {
 
   case class Config(
-    sources: Seq[(File, File)] = Seq.empty[(File, File)],
-    generatedDirectory: File = new File("."),
     additionalImports: Seq[String] = Seq.empty[String],
-    templateFormats: Map[String, String] = Map.empty[String, String]
+    source: File = new File("."),
+    sourceDirectory: File = new File("."),
+    templateFormats: Map[String, String] = Map.empty[String, String],
+    output: File = new File("."),
   )
 
   val parser = new scopt.OptionParser[Config]("scopt") {
     head("Twirl Template Compiler", "0.1")
 
-    arg[File]("<outputDirectory>").required().action { (value, config) =>
-      config.copy(generatedDirectory = value)
-    }.text("directory to output compiled templates to")
+    arg[File]("<output>").required().action { (value, config) =>
+      config.copy(output = value)
+    }.text("output file")
 
-    arg[String]("<source,sourceDirectory>...").unbounded().required().action { (value, config) =>
-      config.copy(sources = config.sources ++ {
-        value.split(",") match {
-          case Array(source, sourceDirectory) => Seq((new File(source), new File(sourceDirectory)))
-        }
-      })
-    }.text("sources to compile")
+    arg[File]("<sourceDirectory>").required().action { (value, config) =>
+      config.copy(sourceDirectory = value)
+    }.text("root source directory")
+
+    arg[File]("<source>").unbounded().required().action { (value, config) =>
+      config.copy(source = value)
+    }.text("source file")
 
     opt[String]('i', "additionalImport").valueName("<import>").unbounded().action { (value, config) =>
       config.copy(additionalImports = config.additionalImports ++ Seq(value))
@@ -37,25 +40,29 @@ object CommandLineTwirlTemplateCompiler {
     }).keyValueName("format", "formatterType").text("additional template formats to use when compiling templates")
   }
 
-  def main(args: Array[String]): Unit = {
-    val config = parser.parse(args, Config()).getOrElse {
-      return System.exit(1)
+  protected[this] def work(args: Array[String]): Unit = {
+    val finalArgs = args.flatMap {
+      case arg if arg.startsWith("@") => Files.readAllLines(Paths.get(arg.tail)).asScala
+      case arg => Array(arg)
+    }
+    val config = parser.parse(finalArgs, Config()).getOrElse {
+      return System.exit(3)
     }
 
     val templateFormats = defaultFormats ++ config.templateFormats
 
-    config.sources.foreach { case (source, sourceDirectory) =>
-      val extension = source.getName.split('.').last
-      TwirlCompiler.compile(
-        source = source,
-        sourceDirectory = sourceDirectory,
-        generatedDirectory = config.generatedDirectory,
-        formatterType = templateFormats(extension),
-        additionalImports = config.additionalImports.map("import " + _.replace("%format%", extension)).mkString("\n"),
-        codec = Codec(scala.util.Properties.sourceEncoding),
-        inclusiveDot = false
-      )
-    }
+    val extension = config.source.getName.split('.').last
+    val formatterType = templateFormats(extension)
+    val result = TwirlCompiler.compileVirtual(
+      content = new String(Files.readAllBytes(config.source.toPath)),
+      source = config.source,
+      sourceDirectory = config.sourceDirectory,
+      formatterType = formatterType,
+      additionalImports = config.additionalImports.map(_.replace("%format%", extension)),
+      inclusiveDot = false,
+      resultType = s"${formatterType}.Appendable"
+    )
+    Files.write(config.output.toPath, result.content.getBytes)
   }
 
   def defaultFormats = Map(
