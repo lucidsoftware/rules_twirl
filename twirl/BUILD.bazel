@@ -1,8 +1,7 @@
-load("@io_bazel_skydoc//skylark:skylark.bzl", "skylark_doc")
+load("@io_bazel_skydoc//skylark:stardoc.bzl", "stardoc")
 
-skylark_doc(
+stardoc(
     name = "twirl-compiler-docs",
-    srcs = ["twirl.bzl"],
-    format = "html",
-    site_root = "/rules_twirl",
+    input = "twirl.bzl",
+    out = "index.md",
 )

@@ -2,7 +2,7 @@
 
 | Travis | Doc
 | --- | --- |
-| [![Build Status](https://travis-ci.org/lucidsoftware/rules_twirl.svg)](https://travis-ci.org/lucidsoftware/rules_twirl) | [Skydoc](http://lucidsoftware.github.io/rules_twirl/) |
+| [![Build Status](https://travis-ci.org/lucidsoftware/rules_twirl.svg)](https://travis-ci.org/lucidsoftware/rules_twirl) | [Stardoc](http://lucidsoftware.github.io/rules_twirl/) |
 
 ## Overview
 `rules_twirl` compiles [Twirl](https://github.com/playframework/twirl) templates to [Scala](http://www.scala-lang.org/), so they can be used with [`rules_scala`](https://github.com/bazelbuild/rules_scala).
@@ -25,14 +25,16 @@ http_archive(
 
 This installs `rules_twirl` to your `WORKSPACE` at the specified commit. Update the commit as needed.
 
-## Skydoc Documentation
+## Stardoc Documentation
 http://lucidsoftware.github.io/rules_twirl/
 
-### Updating Skydoc
-Skydoc is automatically updated on build merged into the master branch. To update the documentation, please submit a pull request. The doc will be updated when it is merged.
+Stardoc is replacing Skydoc and is currently under development. Doc is likely going to look funny for a while.
+
+### Updating Stardoc
+Stardoc is automatically updated on build merged into the master branch. To update the documentation, please submit a pull request. The doc will be updated when it is merged.
 
 ### Deploying documentation
-The Skydoc site for `rules_twirl` is deployed from the `gh-pages` branch. That branch is deployed with each build of the master branch.
+The Stardoc site for `rules_twirl` is deployed from the `gh-pages` branch. That branch is deployed with each build of the master branch.
 
 ## Usage
 The `twirl_templates` rule compiles Twirl templates to a source jar that can be used with the `rules_scala` rules. For example,
@@ -56,7 +58,7 @@ scala_binary(
 )
 ```
 
-See the [Skydoc documentation](https://lucidsoftware.github.io/rules_twirl/twirl/twirl.html#twirl_templates) for the full list of options for `twirl_templates`.
+See the [Stardoc documentation](https://lucidsoftware.github.io/rules_twirl/twirl/twirl.html#twirl_templates) for the full list of options for `twirl_templates`.
 
 ### Use with the Play Framework
 `twirl_templates` can be used with the [`rules_play_routes`](https://github.com/lucidsoftware/rules_play_routes) to run a Play Framework Service. For example

@@ -62,12 +62,38 @@ def _impl(ctx):
 
 twirl_templates = rule(
   implementation = _impl,
+  doc = "Compiles Twirl templates to Scala sources files.",
   attrs = {
-    "source_directory": attr.label(allow_single_file = True, mandatory = True),
-    "srcs": attr.label_list(allow_files = True, mandatory = True),
-    "additional_imports": attr.string_list(),
-    "include_play_imports": attr.bool(default = False),
-    "template_formats": attr.string_dict(),
+    "source_directory": attr.label(
+      doc = "Directories where Twirl template files are located.",
+      allow_single_file = True,
+      mandatory = True
+    ),
+    "srcs": attr.label_list(
+      doc = "The actual template files contained in the source_directory.",
+      allow_files = True,
+       mandatory = True
+     ),
+    "additional_imports": attr.string_list(
+      doc = "Additional imports to import to the Twirl templates.",
+    ),
+    "include_play_imports": attr.bool(
+      doc = "If true, include the imports the Play project includes by default.",
+      default = False
+    ),
+    "template_formats": attr.string_dict(
+      doc = """
+Formatter types for file extensions.
+
+The default formats are
+```
+"html" -> "play.twirl.api.HtmlFormat",
+"txt" -> "play.twirl.api.TxtFormat",
+"xml" -> "play.twirl.api.XmlFormat",
+"js" -> "play.twirl.api.JavaScriptFormat"
+```
+"""
+    ),
     "_twirl_compiler": attr.label(
       executable = True,
       cfg = "host",
@@ -76,20 +102,3 @@ twirl_templates = rule(
     )
   },
 )
-"""Compiles Twirl templates to Scala sources files.
-
-Args:
-  source_directory: Directories where Twirl template files are located.
-  srcs: The actual template files contained in the source_directory.
-  additional_imports: Additional imports to import to the Twirl templates.
-  include_play_imports: If true, include the imports the Play project includes by default.
-  template_formats: Formatter types for file extensions.
-
-    The default formats are
-    ```
-    "html" -> "play.twirl.api.HtmlFormat",
-    "txt" -> "play.twirl.api.TxtFormat",
-    "xml" -> "play.twirl.api.XmlFormat",
-    "js" -> "play.twirl.api.JavaScriptFormat"
-    ```
-"""

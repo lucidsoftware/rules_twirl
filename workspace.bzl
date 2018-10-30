@@ -1,5 +1,9 @@
+"""
+Load 3rd party maven dependencies
+"""
+
 load("@bazel_tools//tools/build_defs/repo:java.bzl", "java_import_external")
-load("@rules_scala_annex//rules/scala:workspace.bzl", "annex_scala_repository")
+load("@rules_scala_annex//rules/scala:workspace.bzl", "scala_repository")
 load("//3rdparty:maven.bzl", "list_dependencies")
 
 def twirl_repositories():
@@ -9,4 +13,4 @@ def twirl_repositories():
             dep["import_args"].pop("exports")
         java_import_external(**dep["import_args"])
 
-    annex_scala_repository("twirl_scala", ("org.scala-lang", "2.12.4"), "@compiler_bridge_2_12//:src")
+    scala_repository("twirl_scala", ("org.scala-lang", "2.12.4"), "@compiler_bridge_2_12//:src")
