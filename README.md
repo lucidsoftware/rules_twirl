@@ -14,9 +14,10 @@ Create a file called at the top of your repository named `WORKSPACE` and add the
 
 ```python
 # update version as needed
-rules_twirl_version = "3bbbaad084f440249dd22888f3d96e591b382a29"
+rules_twirl_version = "ae15eba1647917daf1cf6cff160112cbc72ecc9d"
 http_archive(
   name = "io_bazel_rules_twirl",
+  sha256 = "5ac0c813f23d616ab78e1fda209253310d30458f7b30451010a9984876de2bbc",
   url = "https://github.com/lucidsoftware/rules_twirl/archive/%s.zip"%rules_twirl_version,
   type = "zip",
   strip_prefix= "rules_twirl-%s" % rules_twirl_version
