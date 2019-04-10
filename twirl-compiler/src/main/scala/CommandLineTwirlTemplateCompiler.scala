@@ -2,7 +2,7 @@ package rulestwirl.twirl
 
 import higherkindness.rules_scala.common.worker.WorkerMain
 import play.twirl.compiler.TwirlCompiler
-import java.io.File
+import java.io.{File, PrintStream}
 import java.nio.file.{Files, Paths}
 import scala.collection.JavaConverters._
 
@@ -42,7 +42,7 @@ object CommandLineTwirlTemplateCompiler extends WorkerMain[Unit] {
 
   override def init(args: Option[Array[String]]): Unit = ()
 
-  protected[this] def work(ctx: Unit, args: Array[String]): Unit = {
+  protected[this] def work(ctx: Unit, args: Array[String], out: PrintStream): Unit = {
     val finalArgs = args.flatMap {
       case arg if arg.startsWith("@") => Files.readAllLines(Paths.get(arg.tail)).asScala
       case arg => Array(arg)

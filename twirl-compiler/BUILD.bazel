@@ -4,6 +4,7 @@ scala_binary(
   name = "twirl-compiler",
   srcs = glob(["src/main/**/*.scala"]),
   visibility = ["//visibility:public"],
+  scala = "//scala:default_scala",
   scalacopts = ["-Ywarn-unused-import"],
   main_class = "rulestwirl.twirl.CommandLineTwirlTemplateCompiler",
   deps = [
