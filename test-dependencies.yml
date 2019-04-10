@@ -1,7 +1,7 @@
 options:
   languages:
     - java
-    - scala:2.11.11
+    - scala:2.12.4
   resolvers:
     - id: central
       type: default
@@ -12,17 +12,16 @@ dependencies:
   com.typesafe.play:
     twirl-api:
       lang: scala
-      version: 1.2.1
+      version: "1.2.1"
   org.specs2:
     specs2-core:
       lang: scala
-      version: 3.9.5
+      version: "3.9.5"
 
-replacements:
   org.scala-lang:
     scala-library:
       lang: java
-      target: '@scala_scala_library//jar'
+      version: "2.12.4"
     scala-reflect:
       lang: java
-      target: '@scala_scala_reflect//jar'
+      version: "2.12.4"
