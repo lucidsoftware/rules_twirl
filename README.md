@@ -14,14 +14,17 @@ Create a file called at the top of your repository named `WORKSPACE` and add the
 
 ```python
 # update version as needed
-rules_twirl_version = "ae15eba1647917daf1cf6cff160112cbc72ecc9d"
+rules_twirl_version = "bf8bb5cea8bb14c968ac29a722ecbdb16d3a974a"
 http_archive(
   name = "io_bazel_rules_twirl",
-  sha256 = "5ac0c813f23d616ab78e1fda209253310d30458f7b30451010a9984876de2bbc",
-  url = "https://github.com/lucidsoftware/rules_twirl/archive/%s.zip"%rules_twirl_version,
+  sha256 = "5abc53fc6a7d42de5e068e35ea01652fd9e2cfe07c1c92c5f8854b0e26ab8cdf",
+  strip_prefix = "rules_twirl-{}".format(rules_twirl_version),
   type = "zip",
-  strip_prefix= "rules_twirl-%s" % rules_twirl_version
+  url = "https://github.com/lucidsoftware/rules_twirl/archive/{}.zip".format(rules_twirl_version),
 )
+
+load("@io_bazel_rules_twirl//:workspace.bzl", "twirl_repositories")
+twirl_repositories()
 ```
 
 This installs `rules_twirl` to your `WORKSPACE` at the specified commit. Update the commit as needed.

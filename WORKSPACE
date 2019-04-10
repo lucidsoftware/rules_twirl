@@ -7,6 +7,7 @@ http_archive(
     name = "rules_scala_annex",
     sha256 = "7d0bfa327d177ae3258483082b5a2c2dff763aca53a20b07b6b2cc5e866ae9fd",
     strip_prefix = "rules_scala-{}".format(rules_scala_annex_version),
+    type = "zip",
     url = "https://github.com/higherkindness/rules_scala/archive/{}.zip".format(rules_scala_annex_version),
 )
 
