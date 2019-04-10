@@ -1,12 +1,12 @@
 package rulestwirl.twirl
 
-import annex.worker.SimpleMain
+import higherkindness.rules_scala.common.worker.WorkerMain
 import play.twirl.compiler.TwirlCompiler
 import java.io.File
 import java.nio.file.{Files, Paths}
 import scala.collection.JavaConverters._
 
-object CommandLineTwirlTemplateCompiler extends SimpleMain {
+object CommandLineTwirlTemplateCompiler extends WorkerMain[Unit] {
 
   case class Config(
     additionalImports: Seq[String] = Seq.empty[String],
@@ -40,7 +40,9 @@ object CommandLineTwirlTemplateCompiler extends SimpleMain {
     }).keyValueName("format", "formatterType").text("additional template formats to use when compiling templates")
   }
 
-  protected[this] def work(args: Array[String]): Unit = {
+  override def init(args: Option[Array[String]]): Unit = ()
+
+  protected[this] def work(ctx: Unit, args: Array[String]): Unit = {
     val finalArgs = args.flatMap {
       case arg if arg.startsWith("@") => Files.readAllLines(Paths.get(arg.tail)).asScala
       case arg => Array(arg)

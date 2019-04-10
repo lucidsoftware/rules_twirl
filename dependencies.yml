@@ -13,24 +13,33 @@ dependencies:
   com.github.scopt:
     scopt:
       lang: scala
-      version: 3.7.0
+      version: "3.7.0"
+
   com.typesafe.play:
     twirl-compiler:
       lang: scala
-      version: 1.2.1
+      version: "1.2.1"
+
   org.scala-lang.modules:
     scala-parser-combinators:
       lang: scala
       version: "1.1.0"
 
-replacements:
+  org.scala-sbt:
+    test-interface:
+      lang: java
+      version: "1.0"
+    zinc:
+      lang: scala
+      version: "1.2.1"
+
   org.scala-lang:
     scala-compiler:
       lang: java
-      target: '@twirl_scala_scala_compiler//jar'
+      version: "2.12.4"
     scala-library:
       lang: java
-      target: '@twirl_scala_scala_library//jar'
+      version: "2.12.4"
     scala-reflect:
       lang: java
-      target: '@twirl_scala_scala_reflect//jar'
+      version: "2.12.4"
