@@ -2,12 +2,23 @@
 Load 3rd party maven dependencies
 """
 
-load("@bazel_tools//tools/build_defs/repo:java.bzl", "java_import_external")
-load("//3rdparty:maven.bzl", "list_dependencies")
+load("@rules_jvm_external//:defs.bzl", "maven_install")
 
 def twirl_repositories():
-    for dep in list_dependencies():
-        if "exports" in dep["import_args"]:
-            dep["import_args"]["deps"] = dep["import_args"]["exports"]
-            dep["import_args"].pop("exports")
-        java_import_external(**dep["import_args"])
+    maven_install(
+        name = "twirl",
+        artifacts = [
+            "com.github.scopt:scopt_2.12:3.7.0",
+            "com.typesafe.play:twirl-compiler_2.12:1.2.1",
+            "org.scala-lang.modules:scala-parser-combinators_2.12:1.1.0",
+            "org.scala-sbt:zinc_2.12:1.2.1",
+            "org.scala-sbt:compiler-interface:1.2.1",
+            "org.scala-sbt:util-interface:1.2.0",
+            "org.scala-lang:scala-compiler:2.12.4",
+            "org.scala-lang:scala-library:2.12.4",
+            "org.scala-lang:scala-reflect:2.12.4",
+        ],
+        repositories = [
+            "http://central.maven.org/maven2",
+        ],
+    )

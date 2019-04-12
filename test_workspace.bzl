@@ -2,12 +2,20 @@
 Load test 3rd party maven dependencies
 """
 
-load("@bazel_tools//tools/build_defs/repo:java.bzl", "java_import_external")
-load("//3rdparty:test_maven.bzl", "list_dependencies")
+load("@rules_jvm_external//:defs.bzl", "maven_install")
 
 def twirl_test_repositories():
-    for dep in list_dependencies():
-        if "exports" in dep["import_args"]:
-            dep["import_args"]["deps"] = dep["import_args"]["exports"]
-            dep["import_args"].pop("exports")
-        java_import_external(**dep["import_args"])
+    maven_install(
+        name = "twirl_test",
+        artifacts = [
+            "com.typesafe.play:twirl-api_2.12:1.2.1",
+            "org.specs2:specs2-common_2.12:3.9.5",
+            "org.specs2:specs2-core_2.12:3.9.5",
+            "org.specs2:specs2-matcher_2.12:3.9.5",
+            "org.scala-lang:scala-library:2.12.4",
+            "org.scala-lang:scala-reflect:2.12.4",
+        ],
+        repositories = [
+            "http://central.maven.org/maven2",
+        ],
+    )

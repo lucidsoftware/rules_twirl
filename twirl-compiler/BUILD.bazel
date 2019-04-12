@@ -8,14 +8,14 @@ scala_binary(
   main_class = "rulestwirl.twirl.CommandLineTwirlTemplateCompiler",
   deps = [
     "@rules_scala_annex//src/main/scala/higherkindness/rules_scala/common/worker:worker",
-    "@twirl_com_github_scopt_scopt_2_12//jar",
-    "@twirl_com_typesafe_play_twirl_compiler_2_12//jar",
-    "@twirl_org_scala_lang_modules_scala_parser_combinators_2_12//jar",
+    "@twirl//:com_github_scopt_scopt_2_12",
+    "@twirl//:com_typesafe_play_twirl_compiler_2_12",
+    "@twirl//:org_scala_lang_modules_scala_parser_combinators_2_12",
   ],
   deps_used_whitelist = [
-    "@twirl_org_scala_lang_modules_scala_parser_combinators_2_12//jar",
+    "@twirl//:org_scala_lang_modules_scala_parser_combinators_2_12",
   ],
   runtime_deps = [
-    "@twirl_org_scala_lang_scala_reflect//jar",
+    "@twirl//:org_scala_lang_scala_reflect",
   ],
 )
