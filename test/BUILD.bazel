@@ -47,9 +47,9 @@ scala_test(
     ":twirl-test-templates-custom-formatter",
   ],
   deps = [
-    "@com_typesafe_play_twirl_api_2_12//jar",
-    "@org_specs2_specs2_common_2_12//jar",
-    "@org_specs2_specs2_core_2_12//jar",
-    "@org_specs2_specs2_matcher_2_12//jar",
+    "@twirl_test//:com_typesafe_play_twirl_api_2_12",
+    "@twirl_test//:org_specs2_specs2_common_2_12",
+    "@twirl_test//:org_specs2_specs2_core_2_12",
+    "@twirl_test//:org_specs2_specs2_matcher_2_12",
   ],
 )
