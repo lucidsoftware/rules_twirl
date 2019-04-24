@@ -64,7 +64,10 @@ object CommandLineTwirlTemplateCompiler extends WorkerMain[Unit] {
       inclusiveDot = false,
       resultType = s"${formatterType}.Appendable"
     )
-    Files.write(config.output.toPath, result.content.getBytes)
+
+    // TwirlCompiler.compileVirtual generates a footer comment that contains non-reproducible metatdata; remove it
+    val sansMetadata = result.content.split("\n").span(s => !s.contains("-- GENERATED --"))._1.dropRight(1).mkString("\n")
+    Files.write(config.output.toPath, sansMetadata.getBytes)
   }
 
   def defaultFormats = Map(
