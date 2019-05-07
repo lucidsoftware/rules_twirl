@@ -21,4 +21,5 @@ def twirl_repositories():
         repositories = [
             "http://central.maven.org/maven2",
         ],
+        fetch_sources = True,
     )
