@@ -36,8 +36,8 @@ before_install:
     rm -f install.sh
   - cat .bazelrc.travis >> .bazelrc
 script:
-  - ./tools/skylint.sh
   - ./test/run_all_tests.sh ci
+  - ./tools/skylint.sh
   - bazel build twirl:twirl-compiler-docs
   - bazel shutdown
 before_deploy:
