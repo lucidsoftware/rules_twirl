@@ -18,4 +18,6 @@ def twirl_test_repositories():
         repositories = [
             "http://central.maven.org/maven2",
         ],
+        fetch_sources = True,
+        maven_install_json = "//:twirl_test_install.json",
     )
