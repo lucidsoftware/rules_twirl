@@ -88,10 +88,10 @@ http_archive(
     url = "https://github.com/protocolbuffers/protobuf/archive/{}.zip".format(protobuf_version),
 )
 
-RULES_JVM_EXTERNAL_TAG = "5ba86835f7e4f6fe31e23e3b427f0970d81a6516"
+RULES_JVM_EXTERNAL_TAG = "2.3"
 http_archive(
     name = "rules_jvm_external",
-    sha256 = "97bf871dccb5695548436014b4cae6b91b6450e880b2d32f4597a18a19586c28",
+    sha256 = "375b1592e3f4e0a46e6236e19fc30c8020c438803d4d49b13b40aaacd2703c30",
     strip_prefix = "rules_jvm_external-{}".format(RULES_JVM_EXTERNAL_TAG),
     type = "zip",
     url = "https://github.com/bazelbuild/rules_jvm_external/archive/{}.zip".format(RULES_JVM_EXTERNAL_TAG),
