@@ -3,20 +3,30 @@ workspace(name = "io_bazel_rules_twirl")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 # rules_jvm_external
-rules_jvm_external_version = "2.1"
+RULES_JVM_EXTERNAL_TAG = "2.5"
 http_archive(
     name = "rules_jvm_external",
-    sha256 = "515ee5265387b88e4547b34a57393d2bcb1101314bcc5360ec7a482792556f42",
-    strip_prefix = "rules_jvm_external-{}".format(rules_jvm_external_version),
+    sha256 = "249e8129914be6d987ca57754516be35a14ea866c616041ff0cd32ea94d2f3a1",
+    strip_prefix = "rules_jvm_external-{}".format(RULES_JVM_EXTERNAL_TAG),
     type = "zip",
-    url = "https://github.com/bazelbuild/rules_jvm_external/archive/{}.zip".format(rules_jvm_external_version),
+    url = "https://github.com/bazelbuild/rules_jvm_external/archive/{}.zip".format(RULES_JVM_EXTERNAL_TAG),
 )
 
+load(":workspace.bzl", "twirl_repositories")
+twirl_repositories()
+load("@twirl//:defs.bzl", twirl_pinned_maven_install = "pinned_maven_install")
+twirl_pinned_maven_install()
+
+load(":test_workspace.bzl", "twirl_test_repositories")
+twirl_test_repositories()
+load("@twirl_test//:defs.bzl", twirl_test_pinned_maven_install = "pinned_maven_install")
+twirl_test_pinned_maven_install()
+
 # higherkindness/rules_scala
-rules_scala_annex_version = "ac2101359ec810f9e129d47aa0306608035dacf2" # update this as needed
+rules_scala_annex_version = "584e319f61a7c15360831b367c9a092570df9659" # update this as needed
 http_archive(
     name = "rules_scala_annex",
-    sha256 = "5803bbc490570a188ba0183ce2a3ca2b5d1e1078466945ec0d75427b29f74aac",
+    sha256 = "9c9d9b0b4d995a0ed4aedfd6e3b201fe10cbb52b35c9bbec669138da56cd4f3b",
     strip_prefix = "rules_scala-{}".format(rules_scala_annex_version),
     type = "zip",
     url = "https://github.com/higherkindness/rules_scala/archive/{}.zip".format(rules_scala_annex_version),
@@ -29,6 +39,8 @@ bind(
 
 load("@rules_scala_annex//rules/scala:workspace.bzl", "scala_register_toolchains", "scala_repositories")
 scala_repositories()
+load("@annex//:defs.bzl", annex_pinned_maven_install = "pinned_maven_install")
+annex_pinned_maven_install()
 scala_register_toolchains()
 
 # Skylib
@@ -41,26 +53,25 @@ http_archive(
     url = "https://github.com/bazelbuild/bazel-skylib/archive/{}.zip".format(skylib_version),
 )
 
+# rules_nodejs
 # To use the JavaScript version of Sass, we need to first install nodejs
-rules_nodejs_version = "84882ba224f51f85d589e9cd45b30758cfdbf006"
+rules_nodejs_version = "0.34.0"
 http_archive(
     name = "build_bazel_rules_nodejs",
-    sha256 = "8662ffdaedbee7b85d4aadbbe8005a65cceea128bb0d07aa892998e3683caea2",
+    sha256 = "5be393c5c7b83029c941238ea3f735ffac541538744d010fd1c3ed901386cec0",
     strip_prefix = "rules_nodejs-{}".format(rules_nodejs_version),
     type = "zip",
     url = "https://github.com/bazelbuild/rules_nodejs/archive/{}.zip".format(rules_nodejs_version),
 )
-load("@build_bazel_rules_nodejs//:package.bzl", "rules_nodejs_dependencies")
-rules_nodejs_dependencies()
 
 load("@build_bazel_rules_nodejs//:defs.bzl", "node_repositories")
 node_repositories(package_json = [])
 
 # rules_sass
-rules_sass_version = "8b61ad6953fde55031658e1731c335220f881369" # update this as needed
+rules_sass_version = "1.22.7" # update this as needed
 http_archive(
     name = "io_bazel_rules_sass",
-    sha256 = "afb08f0ae0060c1dbdd11d22578972d087e5463e647ce35dfc2b6c2a41682da8",
+    sha256 = "a8b6d287a5d40d70662c4d6a1db282e9f3d34a0cf6acd091dfb4c85c9f7c6997",
     strip_prefix = "rules_sass-{}".format(rules_sass_version),
     type = "zip",
     url = "https://github.com/bazelbuild/rules_sass/archive/{}.zip".format(rules_sass_version),
@@ -72,10 +83,10 @@ load("@io_bazel_rules_sass//sass:sass_repositories.bzl", "sass_repositories")
 sass_repositories()
 
 # Skydoc
-skydoc_version = "b8a32e07ee8297c89ca8020af4fa2163a766706f" # update this as needed
+skydoc_version = "0.3.0" # update this as needed
 http_archive(
     name = "io_bazel_skydoc",
-    sha256 = "694602137e5d56cfd35622cf58c047549324a0db1522ee944ad86e74420be9db",
+    sha256 = "8762a212cff5f81505a1632630edcfe9adce381479a50a03c968bd2fc217972d",
     strip_prefix = "skydoc-{}".format(skydoc_version),
     type = "zip",
     url = "https://github.com/bazelbuild/skydoc/archive/{}.zip".format(skydoc_version),
@@ -92,7 +103,6 @@ http_archive(
     strip_prefix = "bazel-0.27.0",
     urls = ["https://github.com/bazelbuild/bazel/archive/0.27.0.zip"],
 )
-
 # Also for Skylint. Comes from
 # https://github.com/cgrushko/proto_library/blob/master/WORKSPACE
 protobuf_version = "3.9.0"
@@ -103,12 +113,5 @@ http_archive(
     type = "zip",
     url = "https://github.com/protocolbuffers/protobuf/archive/v{}.zip".format(protobuf_version),
 )
-
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 protobuf_deps()
-
-load(":workspace.bzl", "twirl_repositories")
-twirl_repositories()
-
-load(":test_workspace.bzl", "twirl_test_repositories")
-twirl_test_repositories()
