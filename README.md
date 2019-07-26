@@ -14,19 +14,19 @@ Create a file called at the top of your repository named `WORKSPACE` and add the
 
 ```python
 # update version as needed
-rules_twirl_version = "bf8bb5cea8bb14c968ac29a722ecbdb16d3a974a"
+rules_twirl_version = "ede0c7e8eb06dd28ffd665c625682f8b56b5fd6a"
 http_archive(
   name = "io_bazel_rules_twirl",
-  sha256 = "5abc53fc6a7d42de5e068e35ea01652fd9e2cfe07c1c92c5f8854b0e26ab8cdf",
+  sha256 = "52ca6f281f20c553dc3771aab6be943abde48550c013b2a0d4e53579239a1eba",
   strip_prefix = "rules_twirl-{}".format(rules_twirl_version),
   type = "zip",
   url = "https://github.com/lucidsoftware/rules_twirl/archive/{}.zip".format(rules_twirl_version),
 )
 
-RULES_JVM_EXTERNAL_TAG = "2.1"
+RULES_JVM_EXTERNAL_TAG = "2.5"
 http_archive(
     name = "rules_jvm_external",
-    sha256 = "515ee5265387b88e4547b34a57393d2bcb1101314bcc5360ec7a482792556f42",
+    sha256 = "249e8129914be6d987ca57754516be35a14ea866c616041ff0cd32ea94d2f3a1",
     strip_prefix = "rules_jvm_external-{}".format(RULES_JVM_EXTERNAL_TAG),
     type = "zip",
     url = "https://github.com/bazelbuild/rules_jvm_external/archive/{}.zip".format(RULES_JVM_EXTERNAL_TAG),
@@ -34,6 +34,8 @@ http_archive(
 
 load("@io_bazel_rules_twirl//:workspace.bzl", "twirl_repositories")
 twirl_repositories()
+load("@twirl//:defs.bzl", twirl_pinned_maven_install = "pinned_maven_install")
+twirl_pinned_maven_install()
 ```
 
 This installs `rules_twirl` to your `WORKSPACE` at the specified commit. Update the commit as needed.
