@@ -2,10 +2,12 @@
 
 | Travis | Doc
 | --- | --- |
-| [![Build Status](https://travis-ci.org/lucidsoftware/rules_twirl.svg)](https://travis-ci.org/lucidsoftware/rules_twirl) | [Stardoc](http://lucidsoftware.github.io/rules_twirl/) |
+| [![Build Status](https://api.travis-ci.org/lucidsoftware/rules_twirl.svg?branch=master)](https://travis-ci.org/lucidsoftware/rules_twirl/branches) | [Stardoc](docs/stardoc/twirl.md) |
 
 ## Overview
-`rules_twirl` compiles [Twirl](https://github.com/playframework/twirl) templates to [Scala](http://www.scala-lang.org/), so they can be used with [`rules_scala`](https://github.com/bazelbuild/rules_scala).
+`rules_twirl` compiles [Twirl](https://github.com/playframework/twirl) templates to [Scala](http://www.scala-lang.org/), so they can be used with [`bazelbuild/rules_scala`](https://github.com/bazelbuild/rules_scala) and [`higherkindness/rules_scala`](https://github.com/higherkindness/rules_scala).
+
+Simple Core API: [twirl_templates](docs/stardoc/twirl.md)
 
 For more information about Twirl templates, see [the Play Twirl documentation](https://www.playframework.com/documentation/latest/ScalaTemplates#the-template-engine).
 
@@ -40,17 +42,6 @@ twirl_pinned_maven_install()
 
 This installs `rules_twirl` to your `WORKSPACE` at the specified commit. Update the commit as needed.
 
-## Stardoc Documentation
-http://lucidsoftware.github.io/rules_twirl/
-
-Stardoc is replacing Skydoc and is currently under development. Doc is likely going to look funny for a while.
-
-### Updating Stardoc
-Stardoc is automatically updated on build merged into the master branch. To update the documentation, please submit a pull request. The doc will be updated when it is merged.
-
-### Deploying documentation
-The Stardoc site for `rules_twirl` is deployed from the `gh-pages` branch. That branch is deployed with each build of the master branch.
-
 ## Usage
 The `twirl_templates` rule compiles Twirl templates to a source jar that can be used with the `rules_scala` rules. For example,
 
@@ -73,7 +64,7 @@ scala_binary(
 )
 ```
 
-See the [Stardoc documentation](https://lucidsoftware.github.io/rules_twirl/twirl/twirl.html#twirl_templates) for the full list of options for `twirl_templates`.
+See the [Stardoc documentation](docs/stardoc/twirl.md) for the full list of options for `twirl_templates`.
 
 ### Use with the Play Framework
 `twirl_templates` can be used with the [`rules_play_routes`](https://github.com/lucidsoftware/rules_play_routes) to run a Play Framework Service. For example
@@ -138,11 +129,18 @@ They can also be run using
 bazel test //test/...
 ```
 
-### CI
-The CI config in `tools/bazel.rc` and other options in `.bazelrc.travis` are used during CI builds.
+### Updating Third Party Dependencies
+We use [rules_jvm_external](https://github.com/bazelbuild/rules_jvm_external) to import third party dependencies.
 
-#### Skylint
-[Skylint](https://github.com/bazelbuild/bazel/blob/master/site/docs/skylark/skylint.md) is run during CI builds. To run it locally use
+To make changes to the dependencies, simply update `maven_install` in the appropriate `workspace.bzl` file (`workspace.bzl` for the main `rules_twirl` implementation or `test_workspace.bzl` for the tests), and then update the dependencies json file used by `rules_jvm_external` by running the following script:
 ```bash
-tools/skylint.sh
+scripts/gen-deps.sh
 ```
+Never modify the dependencies json file directly.
+
+### Updating Stardoc
+Before pushing your changes, make sure you update the documentation by running the following script:
+```bash
+scripts/gen-docs.sh
+```
+Failure to do so will result in CI failing.
