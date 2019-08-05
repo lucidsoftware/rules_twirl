@@ -9,6 +9,7 @@ def twirl_repositories():
         name = "twirl",
         artifacts = [
             "com.github.scopt:scopt_2.12:3.7.0",
+            "com.lucidchart:twirl-compiler-cli:0.1",
             "com.typesafe.play:twirl-compiler_2.12:1.2.1",
             "org.scala-lang.modules:scala-parser-combinators_2.12:1.1.0",
             "org.scala-sbt:zinc_2.12:1.2.1",
