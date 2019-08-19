@@ -13,7 +13,7 @@ http_archive(
 )
 
 load(":workspace.bzl", "twirl_repositories")
-twirl_repositories()
+twirl_repositories("2.5")
 load("@twirl//:defs.bzl", twirl_pinned_maven_install = "pinned_maven_install")
 twirl_pinned_maven_install()
 
@@ -116,3 +116,8 @@ scala_repositories()
 load("@annex//:defs.bzl", annex_pinned_maven_install = "pinned_maven_install")
 annex_pinned_maven_install()
 scala_register_toolchains()
+
+bind(
+  name = "default-twirl-compiler-cli",
+  actual = "//default-compiler-clis:scala_2_11_play_2_5"
+)

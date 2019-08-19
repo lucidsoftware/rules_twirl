@@ -12,7 +12,7 @@ Simple Core API: [twirl_templates](docs/stardoc/twirl.md)
 For more information about Twirl templates, see [the Play Twirl documentation](https://www.playframework.com/documentation/latest/ScalaTemplates#the-template-engine).
 
 ## Installation
-Create a file called at the top of your repository named `WORKSPACE` and add the following snippet to it.
+Create a file at the top of your repository named `WORKSPACE` and add the following snippet to it.
 
 ```python
 # update version as needed
@@ -35,12 +35,42 @@ http_archive(
 )
 
 load("@io_bazel_rules_twirl//:workspace.bzl", "twirl_repositories")
-twirl_repositories()
+twirl_repositories("2.7")
 load("@twirl//:defs.bzl", twirl_pinned_maven_install = "pinned_maven_install")
 twirl_pinned_maven_install()
+
+bind(
+  name = "default-twirl-compiler-cli",
+  actual = "@io_bazel_rules_twirl//default-compiler-clis:scala_2_12_play_2_7"
+)
 ```
 
-This installs `rules_twirl` to your `WORKSPACE` at the specified commit. Update the commit as needed.
+This installs `rules_twirl` to your `WORKSPACE` and binds the default Twirl compiler cli the rules will use. Update the commit as needed.
+
+In the above example, the Twirl compiler cli for Scala 2.12 and Play 2.7 is used. However, you can specify a different compiler.
+
+We provide 5 default compilers:
+
+- For Scala 2.11 + Play 2.5: `@io_bazel_rules_twirl//default-compiler-clis:scala_2_11_play_2_5`
+- For Scala 2.11 + Play 2.6: `@io_bazel_rules_twirl//default-compiler-clis:scala_2_11_play_2_6`
+- For Scala 2.11 + Play 2.7: `@io_bazel_rules_twirl//default-compiler-clis:scala_2_11_play_2_7`
+- For Scala 2.12 + Play 2.6: `@io_bazel_rules_twirl//default-compiler-clis:scala_2_12_play_2_6`
+- For Scala 2.12 + Play 2.7: `@io_bazel_rules_twirl//default-compiler-clis:scala_2_12_play_2_7`
+
+To bind one of the default compilers, simply specify the correct Play version in the call to `twirl_repositories` and update the bind statement:
+```python
+load("@io_bazel_rules_twirl//:workspace.bzl", "twirl_repositories")
+twirl_repositories(<Play Version>)
+load("@twirl//:defs.bzl", twirl_pinned_maven_install = "pinned_maven_install")
+twirl_pinned_maven_install()
+
+bind(
+  name = "default-twirl-compiler-cli",
+  actual = <Default Compiler Label>
+)
+```
+
+Note: twirl_repositories only needs to know the Play version; there's no special config for the Scala version (just make sure you bind the right compiler label)
 
 ## Usage
 The `twirl_templates` rule compiles Twirl templates to a source jar that can be used with the `rules_scala` rules. For example,
