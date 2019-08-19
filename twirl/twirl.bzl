@@ -98,7 +98,7 @@ The default formats are
       executable = True,
       cfg = "host",
       allow_files = True,
-      default = Label("//compiler-cli"),
+      default = Label("//external:default-twirl-compiler-cli"),
     )
   },
 )
