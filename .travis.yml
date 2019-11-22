@@ -34,8 +34,14 @@ before_install:
     ./install.sh --user
     rm -f install.sh
   - cat .bazelrc.travis >> .bazelrc
-script:
-  - ./scripts/skylint.sh
-  - ./test/run_all_tests.sh ci
-  - ./scripts/gen-docs.sh && git diff --exit-code docs/
-  - bazel shutdown
+jobs:
+  include:
+# Build
+    - stage: build
+      script: ./scripts/travis.sh build
+# Lint
+    - stage: lint
+      script: ./scripts/travis.sh lint
+# Test
+    - stage: test
+      script: ./scripts/travis.sh test
