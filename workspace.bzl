@@ -20,7 +20,7 @@ def twirl_repositories():
             "org.scala-lang:scala-reflect:2.12.4",
         ],
         repositories = [
-            "http://central.maven.org/maven2",
+            "https://repo.maven.apache.org/maven2",
         ],
         fetch_sources = True,
         maven_install_json = "@io_bazel_rules_twirl//:twirl_install.json",
