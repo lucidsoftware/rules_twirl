@@ -1,28 +1,6 @@
 java_binary(
-    name = "standard-compiler-cli",
-    main_class = "rulestwirl.twirl.CommandLineTwirlTemplateCompiler",
-    visibility = ["//visibility:public"],
-    runtime_deps = ["@twirl//:com_lucidchart_twirl_compiler_cli"],
-)
-
-java_binary(
-    name = "utf8-compiler-cli",
-    jvm_flags = ["-Dfile.encoding=UTF-8"],
-    main_class = "rulestwirl.twirl.CommandLineTwirlTemplateCompiler",
-    visibility = ["//visibility:public"],
-    runtime_deps = ["@twirl//:com_lucidchart_twirl_compiler_cli"],
-)
-
-config_setting(
-    name = "utf8",
-    values = {"define": "twirl.compiler.encoding=utf8"},
-)
-
-alias(
     name = "compiler-cli",
-    actual = select({
-        ":utf8": "utf8-compiler-cli",
-        "//conditions:default": "standard-compiler-cli",
-    }),
+    main_class = "rulestwirl.twirl.CommandLineTwirlTemplateCompiler",
     visibility = ["//visibility:public"],
+    runtime_deps = ["@twirl//:com_lucidchart_twirl_compiler_cli"],
 )
