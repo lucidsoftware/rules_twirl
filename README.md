@@ -2,7 +2,7 @@
 
 | Travis | Doc
 | --- | --- |
-| [![Build Status](https://api.travis-ci.org/lucidsoftware/rules_twirl.svg?branch=master)](https://travis-ci.org/lucidsoftware/rules_twirl/branches) | [Stardoc](docs/stardoc/twirl.md) |
+| [![Build Status](https://api.travis-ci.com/lucidsoftware/rules_twirl.svg?branch=master)](https://travis-ci.com/lucidsoftware/rules_twirl/branches) | [Stardoc](docs/stardoc/twirl.md) |
 
 ## Overview
 `rules_twirl` compiles [Twirl](https://github.com/playframework/twirl) templates to [Scala](http://www.scala-lang.org/), so they can be used with [`bazelbuild/rules_scala`](https://github.com/bazelbuild/rules_scala) and [`higherkindness/rules_scala`](https://github.com/higherkindness/rules_scala).
