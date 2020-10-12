@@ -16,19 +16,19 @@ Create a file called at the top of your repository named `WORKSPACE` and add the
 
 ```python
 # update version as needed
-rules_twirl_version = "f0d0cc6951796e0f530ed1470f1b93930e6cb3b1"
+rules_twirl_version = "9ac789845e3a481fe520af57bd47a4261edb684f"
 http_archive(
   name = "io_bazel_rules_twirl",
-  sha256 = "d52b3db5486f94bad5e0638136b23860b5a7105a35adc60094e1ad60c06c38dc",
+  sha256 = "b1698a2a59b76dc9df233314c2a1ca8cee4a0477665cff5eafd36f92057b2044",
   strip_prefix = "rules_twirl-{}".format(rules_twirl_version),
   type = "zip",
   url = "https://github.com/lucidsoftware/rules_twirl/archive/{}.zip".format(rules_twirl_version),
 )
 
-RULES_JVM_EXTERNAL_TAG = "2.9"
+RULES_JVM_EXTERNAL_TAG = "3.3"
 http_archive(
     name = "rules_jvm_external",
-    sha256 = "e5b97a31a3e8feed91636f42e19b11c49487b85e5de2f387c999ea14d77c7f45",
+    sha256 = "d85951a92c0908c80bd8551002d66cb23c3434409c814179c0ff026b53544dab",
     strip_prefix = "rules_jvm_external-{}".format(RULES_JVM_EXTERNAL_TAG),
     type = "zip",
     url = "https://github.com/bazelbuild/rules_jvm_external/archive/{}.zip".format(RULES_JVM_EXTERNAL_TAG),
