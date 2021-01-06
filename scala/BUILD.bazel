@@ -5,7 +5,7 @@ load(
     "scala_library",
 )
 
-scala_version = "2.12.4"
+scala_version = "2.13.3"
 
 compiler_classpath = [
     "@twirl//:org_scala_lang_scala_compiler",
@@ -25,22 +25,9 @@ configure_bootstrap_scala(
     visibility = ["//visibility:public"],
 )
 
-scala_library(
-    name = "compiler_bridge",
-    srcs = [
-        "@compiler_bridge_2_12//:src",
-    ],
-    scala = ":bootstrap",
-    visibility = ["//visibility:public"],
-    deps = compiler_classpath + [
-        "@twirl//:org_scala_sbt_compiler_interface",
-        "@twirl//:org_scala_sbt_util_interface",
-    ],
-)
-
 configure_zinc_scala(
     name = "zinc",
-    compiler_bridge = ":compiler_bridge",
+    compiler_bridge = "@twirl//:org_scala_sbt_compiler_bridge_2_13",
     compiler_classpath = compiler_classpath,
     runtime_classpath = runtime_classpath,
     version = scala_version,
