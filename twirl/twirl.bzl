@@ -7,7 +7,8 @@ gendir_base_path = "main/twirl"
 
 play_imports = [
   "play.twirl.api._",
-  "play.twirl.api.TemplateMagic._",
+  "play.twirl.api.TwirlFeatureImports._",
+  "play.twirl.api.TwirlHelperImports._",
   "models._",
   "controllers._",
   "play.api.i18n._",
