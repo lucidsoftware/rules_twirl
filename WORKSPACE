@@ -3,10 +3,10 @@ workspace(name = "io_bazel_rules_twirl")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 # rules_jvm_external
-RULES_JVM_EXTERNAL_TAG = "3.3"
+RULES_JVM_EXTERNAL_TAG = "4.2"
 http_archive(
     name = "rules_jvm_external",
-    sha256 = "d85951a92c0908c80bd8551002d66cb23c3434409c814179c0ff026b53544dab",
+    sha256 = "cd1a77b7b02e8e008439ca76fd34f5b07aecb8c752961f9640dea15e9e5ba1ca",
     strip_prefix = "rules_jvm_external-{}".format(RULES_JVM_EXTERNAL_TAG),
     type = "zip",
     url = "https://github.com/bazelbuild/rules_jvm_external/archive/{}.zip".format(RULES_JVM_EXTERNAL_TAG),
