@@ -51,6 +51,7 @@ def _impl(ctx):
       arguments = [args],
       mnemonic = "TwirlCompile",
       execution_requirements = {"supports-workers": "1"},
+      use_default_shell_env = True,
       progress_message = "Compiling twirl template",
       executable = ctx.executable.twirl_compiler,
     )
