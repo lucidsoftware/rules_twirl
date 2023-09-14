@@ -3,10 +3,10 @@ workspace(name = "io_bazel_rules_twirl")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 # rules_jvm_external
-RULES_JVM_EXTERNAL_TAG = "4.2"
+RULES_JVM_EXTERNAL_TAG = "5.3"
 http_archive(
     name = "rules_jvm_external",
-    sha256 = "cd1a77b7b02e8e008439ca76fd34f5b07aecb8c752961f9640dea15e9e5ba1ca",
+    sha256 = "6cc8444b20307113a62b676846c29ff018402fd4c7097fcd6d0a0fd5f2e86429",
     strip_prefix = "rules_jvm_external-{}".format(RULES_JVM_EXTERNAL_TAG),
     type = "zip",
     url = "https://github.com/bazelbuild/rules_jvm_external/archive/{}.zip".format(RULES_JVM_EXTERNAL_TAG),
@@ -36,10 +36,10 @@ bazel_skylib_workspace()
 
 # rules_nodejs
 # To use the JavaScript version of Sass, we need to first install nodejs
-rules_nodejs_version = "1.4.1"
+rules_nodejs_version = "1.7.0"
 http_archive(
     name = "build_bazel_rules_nodejs",
-    sha256 = "6ea46cb994e349ceb255ec8340370883813cac825e6157770a15f11874d232d2",
+    sha256 = "82030031436c265e7fc427b08d581eeb658d1feca23c73df6e633b0951e9f14f",
     strip_prefix = "rules_nodejs-{}".format(rules_nodejs_version),
     type = "zip",
     url = "https://github.com/bazelbuild/rules_nodejs/archive/{}.zip".format(rules_nodejs_version),
@@ -100,13 +100,13 @@ protobuf_deps()
 
 # higherkindness/rules_scala (used for tests only)
 # TODO: Move tests into their own worskpace s.t. we don't need their dependenices here
-rules_scala_annex_version = "ff423d8bdd0e5383f8f2c048ffd7704bb51a91bf" # update this as needed
+rules_scala_annex_version = "938ffdc24fb25a58220aa650948761073f1dd83b"
 http_archive(
     name = "rules_scala_annex",
-    sha256 = "ae53e9ed5fecadc7baf4637b88109471602be73dda4e5ff6b4bf1767932703c0",
+    sha256 = "ae0cfd560a5238248d5f4c9fcde352e5dfc87cba5efd0b97e4c88ea839fd51b5",
     strip_prefix = "rules_scala-{}".format(rules_scala_annex_version),
     type = "zip",
-    url = "https://github.com/higherkindness/rules_scala/archive/{}.zip".format(rules_scala_annex_version),
+    url = "https://github.com/lucidsoftware/rules_scala/archive/{}.zip".format(rules_scala_annex_version),
 )
 
 bind(
