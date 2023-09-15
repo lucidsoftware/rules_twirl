@@ -11,7 +11,7 @@ jobs:
       USE_BAZEL_VERSION: ${{ matrix.bazel_version }}
     strategy:
       matrix:
-        os: [ubuntu-18.04, macos-10.15]
+        os: [ubuntu-20.04]
         bazel_version: [bazelbuild/5.3.0, bazelbuild/6.3.2]
     steps:
       - uses: actions/checkout@v2
