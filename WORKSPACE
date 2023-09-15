@@ -75,25 +75,43 @@ http_archive(
 load("@io_bazel_skydoc//skylark:skylark.bzl", "skydoc_repositories")
 skydoc_repositories()
 
-# For Skylint
-# Once https://github.com/bazelbuild/bazel/issues/4086 is done, this should be
-# much simpler
-bazel_version = "0.27.0"
+# buildifier
+buildtools_version = "4.2.2"
 http_archive(
-    name = "io_bazel",
-    sha256 = "2d86797a5b96163b7f5e9cbb8f09cc919066e7ee0fe1a614b79680ae36a14ef3",
-    strip_prefix = "bazel-{}".format(bazel_version),
-    urls = ["https://github.com/bazelbuild/bazel/archive/{}.zip".format(bazel_version)],
+  name = "com_github_bazelbuild_buildtools",
+  sha256 = "ae34c344514e08c23e90da0e2d6cb700fcd28e80c02e23e4d5715dddcb42f7b3",
+  strip_prefix = "buildtools-{}".format(buildtools_version),
+  url = "https://github.com/bazelbuild/buildtools/archive/refs/tags/{}.tar.gz".format(buildtools_version)
 )
-# Also for Skylint. Comes from
-# https://github.com/cgrushko/proto_library/blob/master/WORKSPACE
-protobuf_version = "3.11.4"
+
+
+# buildifier is written in Go and hence needs rules_go to be built.
+# See https://github.com/bazelbuild/rules_go for the up to date setup instructions.
 http_archive(
-    name = "com_google_protobuf",
-    sha256 = "9748c0d90e54ea09e5e75fb7fac16edce15d2028d4356f32211cfa3c0e956564",
-    strip_prefix = "protobuf-{}".format(protobuf_version),
-    type = "zip",
-    url = "https://github.com/protocolbuffers/protobuf/archive/v{}.zip".format(protobuf_version),
+  name = "io_bazel_rules_go",
+  sha256 = "6dc2da7ab4cf5d7bfc7c949776b1b7c733f05e56edc4bcd9022bb249d2e2a996",
+  urls = [
+    "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v0.39.1/rules_go-v0.39.1.zip",
+    "https://github.com/bazelbuild/rules_go/releases/download/v0.39.1/rules_go-v0.39.1.zip",
+  ],
+)
+load("@io_bazel_rules_go//go:deps.bzl", "go_rules_dependencies")
+
+go_rules_dependencies()
+
+load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains")
+
+go_register_toolchains(version = "1.20.3")
+
+
+# Also for buildifier. Comes from
+# https://github.com/bazelbuild/buildtools/blob/master/buildifier/README.md
+protobuf_version = "3.19.4"
+http_archive(
+name = "com_google_protobuf",
+sha256 = "3bd7828aa5af4b13b99c191e8b1e884ebfa9ad371b0ce264605d347f135d2568",
+strip_prefix = "protobuf-{}".format(protobuf_version),
+url = "https://github.com/protocolbuffers/protobuf/archive/v{}.tar.gz".format(protobuf_version),
 )
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 protobuf_deps()
@@ -102,16 +120,16 @@ protobuf_deps()
 # TODO: Move tests into their own worskpace s.t. we don't need their dependenices here
 rules_scala_annex_version = "938ffdc24fb25a58220aa650948761073f1dd83b"
 http_archive(
-    name = "rules_scala_annex",
-    sha256 = "ae0cfd560a5238248d5f4c9fcde352e5dfc87cba5efd0b97e4c88ea839fd51b5",
-    strip_prefix = "rules_scala-{}".format(rules_scala_annex_version),
-    type = "zip",
-    url = "https://github.com/lucidsoftware/rules_scala/archive/{}.zip".format(rules_scala_annex_version),
+name = "rules_scala_annex",
+sha256 = "ae0cfd560a5238248d5f4c9fcde352e5dfc87cba5efd0b97e4c88ea839fd51b5",
+strip_prefix = "rules_scala-{}".format(rules_scala_annex_version),
+type = "zip",
+url = "https://github.com/lucidsoftware/rules_scala/archive/{}.zip".format(rules_scala_annex_version),
 )
 
 bind(
-    name = "default_scala",
-    actual = "@rules_scala_annex//src/main/scala:zinc_2_12_10",
+name = "default_scala",
+actual = "@rules_scala_annex//src/main/scala:zinc_2_12_10",
 )
 
 load("@rules_scala_annex//rules/scala:workspace.bzl", "scala_register_toolchains", "scala_repositories")
