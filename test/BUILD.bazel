@@ -2,54 +2,54 @@ load("@rules_scala_annex//rules:scala.bzl", "scala_test")
 load("//twirl:twirl.bzl", "twirl_templates")
 
 twirl_templates(
-  name = "twirl-test-templates-basic",
-  visibility = ["//visibility:public"],
-  source_directory = "twirl-templates",
-  srcs = [
-    "twirl-templates/twirl/com/foo/views/hello.scala.html",
-    "twirl-templates/twirl/com/foo/views/hello.scala.txt",
-    "twirl-templates/twirl/com/foo/views/hello.scala.xml",
-    "twirl-templates/twirl/com/foo/views/hello.scala.js",
-  ],
+    name = "twirl-test-templates-basic",
+    srcs = [
+        "twirl-templates/twirl/com/foo/views/hello.scala.html",
+        "twirl-templates/twirl/com/foo/views/hello.scala.js",
+        "twirl-templates/twirl/com/foo/views/hello.scala.txt",
+        "twirl-templates/twirl/com/foo/views/hello.scala.xml",
+    ],
+    source_directory = "twirl-templates",
+    visibility = ["//visibility:public"],
 )
 
 twirl_templates(
-  name = "twirl-test-templates-additional-imports",
-  visibility = ["//visibility:public"],
-  source_directory = "twirl-templates",
-  srcs = [
-    "twirl-templates/twirl/com/foo/views/addImports.scala.txt",
-  ],
-  additional_imports = ["rulestwirl.test.Person"],
+    name = "twirl-test-templates-additional-imports",
+    srcs = [
+        "twirl-templates/twirl/com/foo/views/addImports.scala.txt",
+    ],
+    additional_imports = ["rulestwirl.test.Person"],
+    source_directory = "twirl-templates",
+    visibility = ["//visibility:public"],
 )
 
 twirl_templates(
-  name = "twirl-test-templates-custom-formatter",
-  visibility = ["//visibility:public"],
-  source_directory = "twirl-templates",
-  srcs = [
-    "twirl-templates/twirl/com/foo/views/customFormatter.scala.txt",
-  ],
-  additional_imports = ["rulestwirl.test.Person"],
-  template_formats = {
-    "txt": "rulestwirl.test.StrangeTxtFormat"
-  },
+    name = "twirl-test-templates-custom-formatter",
+    srcs = [
+        "twirl-templates/twirl/com/foo/views/customFormatter.scala.txt",
+    ],
+    additional_imports = ["rulestwirl.test.Person"],
+    source_directory = "twirl-templates",
+    template_formats = {
+        "txt": "rulestwirl.test.StrangeTxtFormat",
+    },
+    visibility = ["//visibility:public"],
 )
 
 scala_test(
-  name = "twirl-compiler-test",
-  srcs = [
-    "TwirlCompilerTest.scala",
-    "Person.scala",
-    "StrangeTxtFormatter.scala",
-    ":twirl-test-templates-basic",
-    ":twirl-test-templates-additional-imports",
-    ":twirl-test-templates-custom-formatter",
-  ],
-  deps = [
-    "@twirl_test//:com_typesafe_play_twirl_api_2_12",
-    "@twirl_test//:org_specs2_specs2_common_2_12",
-    "@twirl_test//:org_specs2_specs2_core_2_12",
-    "@twirl_test//:org_specs2_specs2_matcher_2_12",
-  ],
+    name = "twirl-compiler-test",
+    srcs = [
+        "Person.scala",
+        "StrangeTxtFormatter.scala",
+        "TwirlCompilerTest.scala",
+        ":twirl-test-templates-additional-imports",
+        ":twirl-test-templates-basic",
+        ":twirl-test-templates-custom-formatter",
+    ],
+    deps = [
+        "@twirl_test//:com_typesafe_play_twirl_api_2_12",
+        "@twirl_test//:org_specs2_specs2_common_2_12",
+        "@twirl_test//:org_specs2_specs2_core_2_12",
+        "@twirl_test//:org_specs2_specs2_matcher_2_12",
+    ],
 )
