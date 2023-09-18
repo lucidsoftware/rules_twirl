@@ -152,7 +152,7 @@ http_archive(
 
 bind(
     name = "default_scala",
-    actual = "@rules_scala_annex//src/main/scala:zinc_2_12_10",
+    actual = "@rules_scala_annex//src/main/scala:zinc_2_13_11",
 )
 
 load("@rules_scala_annex//rules/scala:workspace.bzl", "scala_register_toolchains", "scala_repositories")
