@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-20.04]
-        bazel_version: [bazelbuild/5.3.0, bazelbuild/6.3.2]
+        bazel_version: [bazelbuild/5.4.0, bazelbuild/6.3.2]
     steps:
       - uses: actions/checkout@v3
       - run: cat .bazelrc.ci >> .bazelrc
