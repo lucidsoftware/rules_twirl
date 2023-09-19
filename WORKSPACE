@@ -79,6 +79,19 @@ load("@io_bazel_rules_sass//:defs.bzl", "sass_repositories")
 
 sass_repositories()
 
+
+rules_pkg_version = "0.9.1"
+http_archive(
+  name = "rules_pkg",
+  sha256 = "8f9ee2dc10c1ae514ee599a8b42ed99fa262b757058f65ad3c384289ff70c4b8",
+  urls = [
+    "https://mirror.bazel.build/github.com/bazelbuild/rules_pkg/releases/download/{0}/rules_pkg-{0}.tar.gz".format(rules_pkg_version),
+    "https://github.com/bazelbuild/rules_pkg/releases/download/{0}/rules_pkg-{0}.tar.gz".format(rules_pkg_version),
+  ],
+)
+load("@rules_pkg//:deps.bzl", "rules_pkg_dependencies")
+rules_pkg_dependencies()
+
 # Skydoc
 skydoc_version = "0.3.0"  # update this as needed
 
