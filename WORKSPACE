@@ -153,11 +153,11 @@ protobuf_deps()
 
 # higherkindness/rules_scala (used for tests only)
 # TODO: Move tests into their own worskpace s.t. we don't need their dependenices here
-rules_scala_annex_version = "938ffdc24fb25a58220aa650948761073f1dd83b"
+rules_scala_annex_version = "d396b914cc81d14a278afedc6e7885201655825c"
 
 http_archive(
     name = "rules_scala_annex",
-    sha256 = "ae0cfd560a5238248d5f4c9fcde352e5dfc87cba5efd0b97e4c88ea839fd51b5",
+    sha256 = "cb6d0dc6f0b341dfc4e9239cf6cb09e9c9228a260a1075c2540efd43ccd1c461",
     strip_prefix = "rules_scala-{}".format(rules_scala_annex_version),
     type = "zip",
     url = "https://github.com/lucidsoftware/rules_scala/archive/{}.zip".format(rules_scala_annex_version),
