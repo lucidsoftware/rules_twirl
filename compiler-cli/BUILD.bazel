@@ -1,6 +1,6 @@
 java_binary(
-  name = "compiler-cli",
-  runtime_deps = ["@twirl//:com_lucidchart_twirl_compiler_cli"],
-  main_class = "rulestwirl.twirl.CommandLineTwirlTemplateCompiler",
-  visibility = ["//visibility:public"]
+    name = "compiler-cli",
+    main_class = "rulestwirl.twirl.CommandLineTwirlTemplateCompiler",
+    visibility = ["//visibility:public"],
+    runtime_deps = ["@twirl//:com_lucidchart_twirl_compiler_cli"],
 )

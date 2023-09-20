@@ -8,10 +8,10 @@ def twirl_test_repositories():
     maven_install(
         name = "twirl_test",
         artifacts = [
-            "com.typesafe.play:twirl-api_2.12:1.2.1",
-            "org.specs2:specs2-common_2.12:3.9.5",
-            "org.specs2:specs2-core_2.12:3.9.5",
-            "org.specs2:specs2-matcher_2.12:3.9.5",
+            "com.typesafe.play:twirl-api_2.13:1.6.1",
+            "org.specs2:specs2-common_2.13:4.20.2",
+            "org.specs2:specs2-core_2.13:4.20.2",
+            "org.specs2:specs2-matcher_2.13:4.20.2",
         ],
         repositories = [
             "https://repo.maven.apache.org/maven2",
