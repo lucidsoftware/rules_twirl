@@ -1,16 +1,17 @@
 # Borrowed from higherkindness/rules_scala
 
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-load("@io_bazel_skydoc//stardoc:stardoc.bzl", "stardoc")
-load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
-load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes")
 load("@bazel_skylib//lib:paths.bzl", "paths")
+load("@io_bazel_stardoc//stardoc:stardoc.bzl", "stardoc")
+load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes")
+load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 
 [
     stardoc(
         name = paths.replace_extension(file, "_doc").replace("/", "_"),
         out = paths.replace_extension(file, ".md").replace("/", "_"),
         input = file,
+        symbol_names = ["twirl_templates"],
         deps = [
             "//twirl:bzl_internal",
         ],
@@ -21,7 +22,7 @@ load("@bazel_skylib//lib:paths.bzl", "paths")
 pkg_tar(
     name = "docs",
     srcs = [paths.replace_extension(file, ".md").replace("/", "_") for file in glob(["**/*.bzl"])],
-    mode = "0644"
+    mode = "0644",
 )
 
 bzl_library(
@@ -30,6 +31,7 @@ bzl_library(
     visibility = ["//visibility:public"],
     deps = [
         ":jdk_toolchain_utils",
+        "//twirl-toolchain:bzl",
         "@bazel_skylib//lib:dicts",
         "@bazel_skylib//lib:paths",
     ],

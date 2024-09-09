@@ -1,3 +1,5 @@
+load("//twirl-toolchain:transitions.bzl", "reset_twirl_toolchain_transition", "twirl_toolchain_transition")
+
 """Twirl Template rules
 
 Bazel rules for running the [Twirl Template Compiler](https://github.com/playframework/twirl) on Twirl Template Files
@@ -33,14 +35,10 @@ def _impl(ctx):
         output = ctx.actions.declare_file("gen/{}/{}".format(ctx.label.name, ".".join(parts[:-2] + [parts[-1], parts[-2]])))
 
         args = ctx.actions.args()
-        if hasattr(args, "add_all"):  # Bazel 0.13.0+
-            args.add_all(imports, format_each = "--additionalImport=%s")
-            args.add_all(ctx.attr.template_formats.items(), format_each = "--templateFormat=%s", map_each = _format_map_arg)
-        else:
-            args.add(imports, format = "--additionalImport=%s")
-            args.add(ctx.attr.template_formats.items(), format = "--templateFormat=%s", map_fn = _format_map_args)
+        args.add_all(imports, format_each = "--additionalImport=%s")
+        args.add_all(ctx.attr.template_formats.items(), format_each = "--templateFormat=%s", map_each = _format_map_arg)
         args.add(output)
-        args.add(ctx.file.source_directory.path)
+        args.add_all([ctx.file.source_directory], expand_directories = False)
         args.add(src)
         args.set_param_file_format("multiline")
         args.use_param_file("@%s", use_always = True)
@@ -50,9 +48,15 @@ def _impl(ctx):
             outputs = [output],
             arguments = [args],
             mnemonic = "TwirlCompile",
-            execution_requirements = {"supports-workers": "1"},
-            progress_message = "Compiling twirl template",
-            executable = ctx.executable.twirl_compiler,
+            execution_requirements = {
+                "supports-workers": "1",
+                "supports-multiplex-workers": "1",
+                "supports-multiplex-sandboxing": "1",
+                "supports-worker-cancellation": "1",
+                "supports-path-mapping": "1",
+            },
+            progress_message = "Compiling twirl template %{label}",
+            executable = ctx.toolchains["//twirl-toolchain:toolchain_type"].twirl_compiler.files_to_run,
         )
 
         outputs.append(output)
@@ -61,19 +65,26 @@ def _impl(ctx):
         DefaultInfo(files = depset(outputs)),
     ]
 
+# If you add any labels or label_lists, you will need to add the
+# reset_twirl_toolchain_transition outgoing transition to it. Otherwise
+# you'll end up needlessly changing build config and causing an explosion in
+# size for the build graph.
 twirl_templates = rule(
     implementation = _impl,
+    cfg = twirl_toolchain_transition,
     doc = "Compiles Twirl templates to Scala sources files.",
     attrs = {
         "source_directory": attr.label(
             doc = "Directories where Twirl template files are located.",
             allow_single_file = True,
             mandatory = True,
+            cfg = reset_twirl_toolchain_transition,
         ),
         "srcs": attr.label_list(
             doc = "The actual template files contained in the source_directory.",
             allow_files = True,
             mandatory = True,
+            cfg = reset_twirl_toolchain_transition,
         ),
         "additional_imports": attr.string_list(
             doc = "Additional imports to import to the Twirl templates.",
@@ -95,11 +106,9 @@ The default formats are
 ```
 """,
         ),
-        "twirl_compiler": attr.label(
-            executable = True,
-            cfg = "host",
-            allow_files = True,
-            default = Label("//compiler-cli"),
+        "twirl_toolchain_name": attr.string(
+            doc = "The name of the Twirl toolchain to use for this target",
         ),
     },
+    toolchains = ["//twirl-toolchain:toolchain_type"],
 )

@@ -10,7 +10,7 @@ class TwirlCompilerTest extends Specification {
       val name = "Fred"
       val age = 37
       val template = hello.render(name, age)
-      template.body mustEqual s"<html>$name, age: $age</html>"
+      template.body must equalTo(s"<html>$name, age: $age</html>")
     }
 
     "Compile txt Twirl Templates" in {
@@ -18,7 +18,7 @@ class TwirlCompilerTest extends Specification {
       val name = "Emily"
       val age = 31
       val template = hello.render(name, age)
-      template.body mustEqual s"$name, age: $age"
+      template.body must equalTo(s"$name, age: $age")
     }
 
     "Compile xml Twirl Templates" in {
@@ -26,7 +26,7 @@ class TwirlCompilerTest extends Specification {
       val name = "Martha"
       val age = 49
       val template = hello.render(name, age)
-      template.body mustEqual s"<person><name>$name</name>, <age>$age</age></person>"
+      template.body must equalTo(s"<person><name>$name</name>, <age>$age</age></person>")
     }
 
     "Compile js Twirl Templates" in {
@@ -34,21 +34,21 @@ class TwirlCompilerTest extends Specification {
       val name = "Bob"
       val age = 64
       val template = hello.render(name, age)
-      template.body mustEqual s"""{"name": "$name", "age": "$age"}"""
+      template.body must equalTo(s"""{"name": "$name", "age": "$age"}""")
     }
 
     "Add additional imports" in {
       import twirl.com.foo.views.txt.addImports
       val person = Person("Jim", 24)
       val template = addImports.render(person)
-      template.body mustEqual s"${person.name}, age: ${person.age}"
+      template.body must equalTo(s"${person.name}, age: ${person.age}")
     }
 
     "Set template formatters" in {
       import twirl.com.foo.views.txt.customFormatter
       val name = "Jan"
       val template = customFormatter.render(name)
-      template.body mustEqual s"strangename: strange$name"
+      template.body must equalTo(s"strangename: strange$name")
     }
   }
 }

@@ -1,0 +1,20 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load(":create-toolchain.bzl", "create_twirl_toolchain")
+
+toolchain_type(name = "toolchain_type")
+
+create_twirl_toolchain(
+    name = "twirl-3",
+    twirl_compiler = "//twirl-compiler-cli:twirl-compiler-cli-3",
+)
+
+create_twirl_toolchain(
+    name = "twirl-2-13",
+    twirl_compiler = "//twirl-compiler-cli:twirl-compiler-cli-2-13",
+)
+
+bzl_library(
+    name = "bzl",
+    srcs = glob(["*.bzl"]),
+    visibility = ["//visibility:public"],
+)
