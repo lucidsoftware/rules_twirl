@@ -4,9 +4,9 @@
 #
 # Borrowed from higherkindness/rules_scala
 #
+set -euxo pipefail
 
 cd "$(dirname "$0")/.."
-set -x
 
 rm -fr docs/stardoc
 mkdir -p docs/stardoc
