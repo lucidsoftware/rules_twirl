@@ -10,7 +10,7 @@ scala_2_13_version = "2.13.14"
 
 twirl_version = "2.0.7"
 zinc_version = "1.10.1"
-protobuf_version = "3.19.4"
+protobuf_version = "4.28.3"
 scopt_version = "4.1.0"
 
 def twirl_compiler_cli_3_repositories():
