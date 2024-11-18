@@ -5,7 +5,7 @@ def generate_twirl_test_targets(scala_version):
     # For example 2.13 -> 2-13 or 2_13
     scala_version_dash = scala_version.replace(".", "-")
     scala_version_underscore = scala_version.replace(".", "_")
-    scala = "//scala:zinc_{}".format(scala_version_underscore)
+    scala = "zinc_{}".format(scala_version_underscore)
 
     if scala_version == "3":
         twirl_toolchain_name = "twirl-3"
