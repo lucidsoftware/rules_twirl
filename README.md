@@ -5,65 +5,46 @@
 | [![Build Status](https://github.com/lucidsoftware/rules_twirl/workflows/CI/badge.svg)](https://github.com/lucidsoftware/rules_twirl/actions) | [Stardoc](docs/stardoc/twirl.md) |
 
 ## Overview
-`rules_twirl` compiles [Twirl](https://github.com/playframework/twirl) templates to [Scala](http://www.scala-lang.org/), so they can be used with [`bazelbuild/rules_scala`](https://github.com/bazelbuild/rules_scala) and [`higherkindness/rules_scala`](https://github.com/higherkindness/rules_scala).
+
+`rules_twirl` compiles [Twirl](https://github.com/playframework/twirl) templates to
+[Scala](http://www.scala-lang.org/), so they can be used with
+[`bazelbuild/rules_scala`](https://github.com/bazelbuild/rules_scala) and
+[`lucidsoftware/rules_scala`](https://github.com/lucidsoftware/rules_scala).
 
 Simple Core API: [twirl_templates](docs/stardoc/twirl.md)
 
-For more information about Twirl templates, see [the Play Twirl documentation](https://www.playframework.com/documentation/latest/ScalaTemplates#the-template-engine).
+For more information about Twirl templates, see
+[the Play Twirl documentation](https://www.playframework.com/documentation/latest/ScalaTemplates#the-template-engine).
 
 ## Installation
-Create a file called at the top of your repository named `WORKSPACE` and add the following snippet to it.
 
-```python
-# update version as needed
-rules_twirl_version = "TODO"
-http_archive(
-    name = "rules_twirl",
-    sha256 = "TODO",
+`rules_twirl` isn't yet on the [Bazel Central Registry](https://registry.bazel.build/), so you'll
+need to pull it in via `archive_override`. Be sure to replace `<COMMIT>` with  latest commit on
+`master` and `<INTEGRITY>` with the hash suggested by Bazel after the dependency is first loaded.
+
+*/MODULE.bazel*
+
+```starlark
+bazel_dep(name = "rules_twirl")
+
+rules_twirl_version = "<COMMIT>"
+
+archive_override(
+    module_name = "rules_twirl",
+    integrity = "<INTEGRITY>",
     strip_prefix = "rules_twirl-{}".format(rules_twirl_version),
-    type = "zip",
-    url = "https://github.com/lucidsoftware/rules_twirl/archive/{}.zip".format(rules_twirl_version),
+    urls = ["https://github.com/lucidsoftware/rules_twirl/archive/refs/heads/{}.zip".format(rules_twirl_version)],
 )
-
-# rules_jvm_external
-rules_jvm_external_version = "6.2"
-
-http_archive(
-    name = "rules_jvm_external",
-    sha256 = "aa39ecd47e16d5870eba817fe71476802bc371fe2724a2ddee565992df55f4af",
-    strip_prefix = "rules_jvm_external-{}".format(rules_jvm_external_version),
-    type = "zip",
-    url = "https://github.com/bazelbuild/rules_jvm_external/archive/{}.zip".format(rules_jvm_external_version),
-)
-
-load("@rules_jvm_external//:repositories.bzl", "rules_jvm_external_deps")
-rules_jvm_external_deps()
-
-load("@rules_jvm_external//:setup.bzl", "rules_jvm_external_setup")
-rules_jvm_external_setup()
-
-load(
-    "@rules_twirl//:workspace.bzl",
-    "twirl_compiler_cli_2_13_repositories",
-    "twirl_compiler_cli_3_repositories",
-)
-twirl_compiler_cli_3_repositories()
-load("@twirl_compiler_cli_3//:defs.bzl", twirl_compiler_cli_3_pinned_maven_install = "pinned_maven_install")
-twirl_compiler_cli_3_pinned_maven_install()
-
-twirl_compiler_cli_2_13_repositories()
-load("@twirl_compiler_cli_2_13//:defs.bzl", twirl_compiler_cli_2_13_pinned_maven_install = "pinned_maven_install")
-twirl_compiler_cli_2_13_pinned_maven_install()
-
-# Twirl compiler
-load("@rules_twirl//twirl-toolchain:register-toolchains.bzl", "twirl_register_toolchains")
-twirl_register_toolchains(default_toolchain_name = "twirl-3")
 ```
 
-This installs `rules_twirl` to your `WORKSPACE` and sets up toolchains for a Scala 2.13 and Scala 3 version of the Twirl compiler with Scala 3 being the default. To change the default to Scala 2.13, set `default_toolchain_name = "twirl-2-13"`
+By default, the Scala 3 version of the Twirl compiler will be used. To change the default to
+Scala 2.13, add the `--@rules_twirl//twirl-toolchain=twirl-2-13` flag to your `.bazelrc` file.
 
-If you want to use a custom Twirl compiler, you can set up a custom toolchain in a BUILD.bazel file as follows:
-```python
+If you want to use a custom Twirl compiler, you can set up a custom toolchain like so:
+
+*/BUILD.bazel*
+
+```starlark
 load("@rules_twirl//twirl-toolchain:create-toolchain.bzl", "create_twirl_toolchain")
 
 create_twirl_toolchain(
@@ -72,20 +53,29 @@ create_twirl_toolchain(
 )
 ```
 
-Then change the `twirl_register_toolchains` in the `WORKSPACE` file to use your custom toolchain:
-```python
-twirl_register_toolchains(
-    default_toolchain_name = "twirl-custom",
-    toolchains = ["<label of your custom Twirl templates compiler>"]
-)
+Then, register your toolchain with Bazel and set it as the default in your `.bazelrc` file:
+
+*/MODULE.bazel*
+
+```starlark
+register_toolchains("//:twirl-custom")
 ```
 
-You can find the available versions of the Twirl Compiler CLI on maven: https://mvnrepository.com/artifact/com.lucidchart/twirl-compiler-cli.
+*/.bazelrc*
+
+```
+common --@rules_twirl//twirl-toolchain=twirl-custom
+```
+
+You can find the available versions of the Twirl Compiler CLI on maven:
+https://mvnrepository.com/artifact/com.lucidchart/twirl-compiler-cli.
 
 ## Usage
-The `twirl_templates` rule compiles Twirl templates to a source jar that can be used with the `rules_scala` rules. For example,
 
-```python
+The `twirl_templates` rule compiles Twirl templates to a source jar that can be used with the
+`rules_scala` rules. For example,
+
+```starlark
 twirl_templates(
     name = "twirl-templates",
     source_directory = "app",
@@ -104,10 +94,15 @@ scala_binary(
 ```
 
 ### Overriding the default Twirl compiler
-To override the default Twirl compiler for a single target, you can change the `twirl_toolchain_name` attribute on the `twirl_routes` target. That attribute can be set to the name of any `twirl_toolchain` registered with `twirl_register_toolchains` (and created using `create_twirl_toolchain`). By default `twirl-3` and `twirl-2-13` are valid values.
+
+To override the default Twirl compiler for a single target, you can change the
+`twirl_toolchain_name` attribute on the `twirl_routes` target. That attribute can be set to the name
+of any `twirl_toolchain` registered with `twirl_register_toolchains` (and created using
+`create_twirl_toolchain`). By default `twirl-3` and `twirl-2-13` are valid values.
 
 For example:
-```python
+
+```starlark
 twirl_templates(
     name = "twirl-templates",
     source_directory = "app",
@@ -119,12 +114,16 @@ twirl_templates(
 )
 ```
 
-See the [Stardoc documentation](docs/stardoc/twirl.md) for the full list of options for `twirl_templates`.
+See the [Stardoc documentation](docs/stardoc/twirl.md) for the full list of options for
+`twirl_templates`.
 
 ### Use with the Play Framework
-`twirl_templates` can be used with the [`rules_play_routes`](https://github.com/lucidsoftware/rules_play_routes) to run a Play Framework Service. For example
 
-```python
+`twirl_templates` can be used with the
+[`rules_play_routes`](https://github.com/lucidsoftware/rules_play_routes) to run a Play Framework
+service. For example
+
+```starlark
 twirl_templates(
     name = "twirl-templates",
     source_directory = "app",
@@ -161,8 +160,12 @@ scala_binary(
 ```
 
 ## Development
+
 ### Command Line Twirl Compiler
-This project consists of the Twirl Bazel rules and a command line Twirl compiler. The command line compiler can be built with
+
+This project consists of the Twirl Bazel rules and a command line Twirl compiler. The
+command line compiler can be built with
+
 ```bash
 bazel build //twirl-compiler
 ```
@@ -185,25 +188,40 @@ bazel test //test/...
 ```
 
 ### Updating Third Party Dependencies
-We use [rules_jvm_external](https://github.com/bazelbuild/rules_jvm_external) to import third party dependencies.
 
-To make changes to the dependencies, simply update `maven_install` in the appropriate `workspace.bzl` file (`workspace.bzl` for the main `rules_twirl` implementation or `test_workspace.bzl` for the tests), and then update the dependencies json file used by `rules_jvm_external` by running the following script:
+We use [rules_jvm_external](https://github.com/bazelbuild/rules_jvm_external) to import
+third party dependencies.
+
+To make changes to the dependencies, simply update the appropriate `maven.install` call in
+`MODULE.bazel`, and then update the dependencies json file used by `rules_jvm_external` by running
+the following script:
+
 ```bash
 scripts/gen-deps.sh
 ```
+
 Never modify the dependencies json file directly.
 
 ### Updating Stardoc
+
 Before pushing your changes, make sure you update the documentation by running the following script:
+
 ```bash
 scripts/gen-docs.sh
 ```
+
 Failure to do so will result in CI failing.
 
 ## Releasing
 To release a new version to Maven Central:
  1. Push a tag with this syntax: `P1.P2.P3` where `P1.P2.P3` is the Twirl version, e.g., `2.0.7`
- 2. Once the build completes (including the publish step), find the [staging repo in Sonatype](https://oss.sonatype.org/#stagingRepositories) (assuming you're signed in and have access to the project)
- 3. Verify all the artifacts are on the staging Repository, and then close it through the Sonatype GUI
- 4. Once Sonatype's pre-release checks on the repository complete, release it through the Sonatype GUI
- 5. Verify the artifact's present in [Maven Central](https://search.maven.org/search?q=com.lucidchart) (it can take multiple hours for everything to sync)
+ 2. Once the build completes (including the publish step), find the
+    [staging repo in Sonatype](https://oss.sonatype.org/#stagingRepositories) (assuming you're
+    signed in and have access to the project)
+ 3. Verify all the artifacts are on the staging Repository, and then close it through the
+    Sonatype GUI
+ 4. Once Sonatype's pre-release checks on the repository complete, release it through the
+    Sonatype GUI
+ 5. Verify the artifact's present in
+    [Maven Central](https://search.maven.org/search?q=com.lucidchart) (it can take multiple hours
+    for everything to sync)
