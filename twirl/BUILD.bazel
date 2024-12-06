@@ -1,29 +1,8 @@
-# Borrowed from higherkindness/rules_scala
+# Borrowed from lucidsoftware/rules_scala
 
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-load("@bazel_skylib//lib:paths.bzl", "paths")
-load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes")
-load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
-load("@stardoc//stardoc:stardoc.bzl", "stardoc")
 
-[
-    stardoc(
-        name = paths.replace_extension(file, "_doc").replace("/", "_"),
-        out = paths.replace_extension(file, ".md").replace("/", "_"),
-        input = file,
-        symbol_names = ["twirl_templates"],
-        deps = [
-            "//twirl:bzl_internal",
-        ],
-    )
-    for file in glob(["**/*.bzl"])
-]
-
-pkg_tar(
-    name = "docs",
-    srcs = [paths.replace_extension(file, ".md").replace("/", "_") for file in glob(["**/*.bzl"])],
-    mode = "0644",
-)
+exports_files(["twirl.bzl"])
 
 bzl_library(
     name = "bzl_internal",

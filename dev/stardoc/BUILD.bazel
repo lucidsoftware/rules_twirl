@@ -1,0 +1,29 @@
+# Borrowed from lucidsoftware/rules_scala
+
+load("@bazel_skylib//lib:paths.bzl", "paths")
+load("@rules_pkg//pkg:pkg.bzl", "pkg_tar")
+load("@stardoc//stardoc:stardoc.bzl", "stardoc")
+
+bzl_files = ["//twirl:twirl.bzl"]
+
+[
+    stardoc(
+        name = paths.replace_extension(file, "_doc").removeprefix("//twirl:").replace("/", "_"),
+        out = paths.replace_extension(file, ".md").removeprefix("//twirl:").replace("/", "_"),
+        input = file,
+        symbol_names = ["twirl_templates"],
+        deps = [
+            "//twirl:bzl_internal",
+        ],
+    )
+    for file in bzl_files
+]
+
+pkg_tar(
+    name = "docs",
+    srcs = [
+        paths.replace_extension(file, ".md").removeprefix("//twirl:").replace("/", "_")
+        for file in bzl_files
+    ],
+    mode = "0644",
+)
