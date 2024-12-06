@@ -22,8 +22,6 @@ register_toolchains(
     "//:repository_default_toolchain_21_definition",
     "//scala:zinc_2_13",
     "//scala:zinc_3",
-    "//twirl-toolchain:twirl-2-13",
-    "//twirl-toolchain:twirl-3",
 )
 
 # Please ensure these stay up-to-date with the versions in `versions.bzl`. Unfortunately,

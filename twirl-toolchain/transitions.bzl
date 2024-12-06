@@ -1,8 +1,8 @@
 # This approach of incoming transition, store original values, outgoing
 # transition, reset to original values is inspired by what the rules_go
 # folks are doing.
-toolchain_setting_key = "//twirl-toolchain"
-original_toolchain_setting_key = "//twirl-toolchain:original-twirl-toolchain"
+toolchain_setting_key = "@rules_twirl_toolchain//:twirl-toolchain"
+original_toolchain_setting_key = "@rules_twirl_toolchain//:original-twirl-toolchain"
 
 def _twirl_toolchain_transition_impl(settings, attr):
     """Update the rules_twirl toolchain to the overridden value. Store

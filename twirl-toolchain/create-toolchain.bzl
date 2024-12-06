@@ -12,7 +12,7 @@ def create_twirl_toolchain(name, twirl_compiler):
     native.config_setting(
         name = config_setting_name,
         flag_values = {
-            "//twirl-toolchain": name,
+            "@rules_twirl_toolchain//:twirl-toolchain": name,
         },
     )
 
