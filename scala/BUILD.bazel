@@ -2,7 +2,7 @@ load(
     "@rules_scala_annex//rules:register_toolchain.bzl",
     "register_zinc_toolchain",
 )
-load("//:versions.bzl", "scala_2_13_version", "scala_3_version")
+load("//:workspace.bzl", "scala_2_13_version", "scala_3_version")
 
 # Scala 3
 compiler_classpath_3 = [
