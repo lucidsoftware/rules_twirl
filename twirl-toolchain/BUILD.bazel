@@ -1,7 +1,20 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("@bazel_skylib//rules:common_settings.bzl", "string_flag", "string_setting")
 load(":create-toolchain.bzl", "create_twirl_toolchain")
 
 toolchain_type(name = "toolchain_type")
+
+string_setting(
+    name = "original-twirl-toolchain",
+    build_setting_default = "",
+    visibility = ["//visibility:public"],
+)
+
+string_flag(
+    name = "twirl-toolchain",
+    build_setting_default = "twirl-3",
+    visibility = ["//visibility:public"],
+)
 
 create_twirl_toolchain(
     name = "twirl-3",
