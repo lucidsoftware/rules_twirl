@@ -1,4 +1,3 @@
-load("@com_github_bazelbuild_buildtools//buildifier:def.bzl", "buildifier", "buildifier_test")
 load(
     "@rules_java//toolchains:default_java_toolchain.bzl",
     "DEFAULT_TOOLCHAIN_CONFIGURATION",
@@ -12,13 +11,4 @@ default_java_toolchain(
     javac_supports_worker_multiplex_sandboxing = True,
     source_version = "21",
     target_version = "21",
-)
-
-buildifier(
-    name = "buildifier",
-)
-
-buildifier_test(
-    name = "buildifier_check",
-    mode = "check",
 )

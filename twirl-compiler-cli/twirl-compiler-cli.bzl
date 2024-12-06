@@ -1,7 +1,7 @@
 load("@rules_java//java:java_binary.bzl", "java_binary")
 load("@rules_jvm_external//:defs.bzl", "java_export")
 load("@rules_scala_annex//rules:scala.bzl", "scala_library")
-load("//:workspace.bzl", "twirl_version")
+load("//:versions.bzl", "twirl_version")
 
 def generate_twirl_compiler_targets(scala_version):
     # For example 2.13 -> 2_13 or 2-13

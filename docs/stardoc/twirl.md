@@ -7,7 +7,7 @@
 ## twirl_templates
 
 <pre>
-load("@//twirl:twirl.bzl", "twirl_templates")
+load("@rules_twirl//twirl:twirl.bzl", "twirl_templates")
 
 twirl_templates(<a href="#twirl_templates-name">name</a>, <a href="#twirl_templates-srcs">srcs</a>, <a href="#twirl_templates-additional_imports">additional_imports</a>, <a href="#twirl_templates-include_play_imports">include_play_imports</a>, <a href="#twirl_templates-source_directory">source_directory</a>,
                 <a href="#twirl_templates-template_formats">template_formats</a>, <a href="#twirl_templates-twirl_toolchain_name">twirl_toolchain_name</a>)
