@@ -44,10 +44,8 @@ def _impl(ctx):
         args.use_param_file("@%s", use_always = True)
 
         ctx.actions.run(
-            inputs = [src],
-            outputs = [output],
             arguments = [args],
-            mnemonic = "TwirlCompile",
+            executable = ctx.toolchains["//twirl-toolchain:toolchain_type"].twirl_compiler.files_to_run,
             execution_requirements = {
                 "supports-workers": "1",
                 "supports-multiplex-workers": "1",
@@ -55,8 +53,11 @@ def _impl(ctx):
                 "supports-worker-cancellation": "1",
                 "supports-path-mapping": "1",
             },
+            inputs = [src],
+            mnemonic = "TwirlCompile",
+            outputs = [output],
             progress_message = "Compiling twirl template %{label}",
-            executable = ctx.toolchains["//twirl-toolchain:toolchain_type"].twirl_compiler.files_to_run,
+            toolchain = "//twirl-toolchain:toolchain_type",
         )
 
         outputs.append(output)
