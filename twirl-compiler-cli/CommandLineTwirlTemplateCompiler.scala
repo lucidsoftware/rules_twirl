@@ -8,8 +8,9 @@ import play.twirl.compiler.TwirlCompiler
 import java.io.{File, PrintStream}
 import java.nio.file.{Files, Path, Paths}
 import scala.jdk.CollectionConverters._
-import scopt.OParser
+import scopt.OptionParser
 
+//
 object CommandLineTwirlTemplateCompiler extends WorkerMain[Unit] {
 
   case class Config(
@@ -20,37 +21,41 @@ object CommandLineTwirlTemplateCompiler extends WorkerMain[Unit] {
     var output: Path = Paths.get("."),
   )
 
-  val builder = OParser.builder[Config]
-  def parser(workDir: Path) = {
-    import builder._
-    OParser.sequence(
-      programName("twirl-compiler"),
-      head("Twirl Template Compiler", "0.2"),
-      arg[Path]("<output>").required().action { (value, config) =>
-        config.output = SandboxUtil.getSandboxPath(workDir, value)
-        config
-      }.text("output file"),
+  def parser(workDir: Path, out: PrintStream) = new OptionParser[Config]("twirl-compiler") {
+    head("Command Line Twirl Template Compiler", "0.2")
 
-      arg[Path]("<sourceDirectory>").required().action { (value, config) =>
-        config.sourceDirectory = SandboxUtil.getSandboxPath(workDir, value)
-        config
-      }.text("root source directory"),
+    override def displayToOut(msg: String): Unit = out.println(msg)
+    override def displayToErr(msg: String): Unit = out.println(msg)
+    override def reportError(msg: String): Unit = displayToErr("Error: " + msg)
+    override def reportWarning(msg: String): Unit = displayToErr("Warning: " + msg)
 
-      arg[Path]("<source>").unbounded().required().action { (value, config) =>
-        config.source = SandboxUtil.getSandboxPath(workDir, value)
-        config
-      }.text("source file"),
+    // Do not exit as it causes problems for Bazel workers
+    override def terminate(exitState: Either[String, Unit]): Unit = ()
 
-      opt[String]('i', "additionalImport").valueName("<import>").unbounded().action { (value, config) =>
-        config.additionalImports = config.additionalImports ++ List(value)
-        config
-      }.text("additional imports to add to the compiled templates"),
+    arg[Path]("<output>").required().action { (value, config) =>
+      config.output = SandboxUtil.getSandboxPath(workDir, value)
+      config
+    }.text("output file")
 
-      opt[(String, String)]('t', "templateFormat").unbounded().action({ case ((key, value), config) =>
-        config.templateFormats = config.templateFormats + (key -> value)
-        config
-      }).keyValueName("format", "formatterType").text("additional template formats to use when compiling templates"),
-    )
+    arg[Path]("<sourceDirectory>").required().action { (value, config) =>
+      config.sourceDirectory = SandboxUtil.getSandboxPath(workDir, value)
+      config
+    }.text("root source directory")
+
+    arg[Path]("<source>").unbounded().required().action { (value, config) =>
+      config.source = SandboxUtil.getSandboxPath(workDir, value)
+      config
+    }.text("source file")
+
+    opt[String]('i', "additionalImport").valueName("<import>").unbounded().action { (value, config) =>
+      config.additionalImports = config.additionalImports ++ List(value)
+      config
+    }.text("additional imports to add to the compiled templates")
+
+    opt[(String, String)]('t', "templateFormat").unbounded().action({ case ((key, value), config) =>
+      config.templateFormats = config.templateFormats + (key -> value)
+      config
+    }).keyValueName("format", "formatterType").text("additional template formats to use when compiling templates")
   }
 
   def compileTwirl(config: Config): Unit = {
@@ -83,7 +88,7 @@ object CommandLineTwirlTemplateCompiler extends WorkerMain[Unit] {
     }
     InterruptUtil.throwIfInterrupted()
 
-    OParser.parse(parser(workDir), finalArgs, Config()).map { config =>
+    parser(workDir, out).parse(finalArgs, Config()).map { config =>
       InterruptUtil.throwIfInterrupted()
       compileTwirl(config)
     }.getOrElse {
