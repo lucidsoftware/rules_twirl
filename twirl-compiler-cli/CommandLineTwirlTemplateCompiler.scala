@@ -3,7 +3,7 @@ package rulestwirl.twirl
 import higherkindness.rules_scala.common.error.AnnexWorkerError
 import higherkindness.rules_scala.common.interrupt.InterruptUtil
 import higherkindness.rules_scala.common.sandbox.SandboxUtil
-import higherkindness.rules_scala.common.worker.WorkerMain
+import higherkindness.rules_scala.common.worker.{WorkerMain, WorkTask}
 import play.twirl.compiler.TwirlCompiler
 import java.io.{File, PrintStream}
 import java.nio.file.{Files, Path, Paths}
@@ -58,7 +58,7 @@ object CommandLineTwirlTemplateCompiler extends WorkerMain[Unit] {
     }).keyValueName("format", "formatterType").text("additional template formats to use when compiling templates")
   }
 
-  def compileTwirl(config: Config): Unit = {
+  def compileTwirl(config: Config, isCancelled: Function0[Boolean]): Unit = {
     val templateFormats = defaultFormats ++ config.templateFormats
 
     val extension = config.source.getFileName().toString().split('.').last
@@ -72,7 +72,7 @@ object CommandLineTwirlTemplateCompiler extends WorkerMain[Unit] {
       inclusiveDot = false,
       resultType = s"${formatterType}.Appendable"
     )
-    InterruptUtil.throwIfInterrupted()
+    InterruptUtil.throwIfInterrupted(isCancelled)
 
     // TwirlCompiler.compileVirtual generates a footer comment that contains non-reproducible metatdata; remove it
     val sansMetadata = result.content.split("\n").span(s => !s.contains("-- GENERATED --"))._1.dropRight(1).mkString("\n")
@@ -81,16 +81,16 @@ object CommandLineTwirlTemplateCompiler extends WorkerMain[Unit] {
 
   override def init(args: Option[Array[String]]): Unit = ()
 
-  protected def work(ctx: Unit, args: Array[String], out: PrintStream, workDir: Path, verbosity: Int): Unit = {
-    val finalArgs = args.toList.flatMap {
+  protected def work(task: WorkTask[Unit]): Unit = {
+    val finalArgs = task.args.toList.flatMap {
       case arg if arg.startsWith("@") => Files.readAllLines(Paths.get(arg.tail)).asScala
       case arg => Array(arg)
     }
-    InterruptUtil.throwIfInterrupted()
+    InterruptUtil.throwIfInterrupted(task.isCancelled)
 
-    parser(workDir, out).parse(finalArgs, Config()).map { config =>
-      InterruptUtil.throwIfInterrupted()
-      compileTwirl(config)
+    parser(task.workDir, task.output).parse(finalArgs, Config()).map { config =>
+      InterruptUtil.throwIfInterrupted(task.isCancelled)
+      compileTwirl(config, task.isCancelled)
     }.getOrElse {
       throw new AnnexWorkerError(3)
     }
