@@ -1,6 +1,12 @@
+load("@rules_scala_annex//rules:scalafmt.bzl", "scala_format_test")
 load(":twirl-compiler-cli.bzl", "generate_twirl_compiler_targets")
 
 # Check twirl-compiler-cli.bzl for the actual build definitions
 generate_twirl_compiler_targets(scala_version = "3")
 
 generate_twirl_compiler_targets(scala_version = "2.13")
+
+scala_format_test(
+    name = "format",
+    srcs = glob(["*.scala"]),
+)
