@@ -5,9 +5,12 @@ import higherkindness.rules_scala.common.interrupt.InterruptUtil
 import higherkindness.rules_scala.common.sandbox.SandboxUtil
 import higherkindness.rules_scala.common.worker.{WorkerMain, WorkTask}
 import play.twirl.compiler.TwirlCompiler
+import play.twirl.parser.TwirlIO
 import java.io.{File, PrintStream}
 import java.nio.file.{Files, Path, Paths}
+import scala.io.Codec
 import scala.jdk.CollectionConverters._
+import scala.util.Properties
 import scopt.OptionParser
 
 //
@@ -67,10 +70,13 @@ object CommandLineTwirlTemplateCompiler extends WorkerMain[Unit] {
       content = new String(Files.readAllBytes(config.source)),
       source = config.source.toFile(),
       sourceDirectory = config.sourceDirectory.toFile(),
+      resultType = s"${formatterType}.Appendable",
       formatterType = formatterType,
+      scalaVersion = Some(scalaVersion),
       additionalImports = config.additionalImports.map(_.replace("%format%", extension)),
+      constructorAnnotations = scala.collection.Seq.empty,
+      codec = Codec(Properties.sourceEncoding), // Equivalent to `TwirlIO.defaultCodec`
       inclusiveDot = false,
-      resultType = s"${formatterType}.Appendable"
     )
     InterruptUtil.throwIfInterrupted(isCancelled)
 

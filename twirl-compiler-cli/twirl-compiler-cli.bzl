@@ -9,14 +9,19 @@ def generate_twirl_compiler_targets(scala_version):
     scala_version_dash = scala_version.replace(".", "-")
     if scala_version.startswith("3"):
         scala_library_target = "@twirl_compiler_cli_{}//:org_scala_lang_scala3_library_3".format(scala_version_underscore)
+        version_specific_srcs = ["package3.scala"]
     else:
         scala_library_target = "@twirl_compiler_cli_{}//:org_scala_lang_scala_library".format(scala_version_underscore)
+        version_specific_srcs = ["package2.scala"]
 
     main_class = "rulestwirl.twirl.CommandLineTwirlTemplateCompiler"
 
     scala_library(
         name = "twirl-compiler-lib-{}".format(scala_version_dash),
-        srcs = native.glob(["*.scala"]),
+        srcs = native.glob(
+            ["*.scala"],
+            exclude = ["package*.scala"],
+        ) + version_specific_srcs,
         scalacopts = ["-Xfatal-warnings"],
         visibility = ["//visibility:public"],
         deps_used_whitelist = [
@@ -27,6 +32,7 @@ def generate_twirl_compiler_targets(scala_version):
             scala_library_target,
             "@twirl_compiler_cli_{}//:com_github_scopt_scopt_{}".format(scala_version_underscore, scala_version_underscore),
             "@twirl_compiler_cli_{}//:org_playframework_twirl_twirl_compiler_{}".format(scala_version_underscore, scala_version_underscore),
+            "@twirl_compiler_cli_{}//:org_playframework_twirl_twirl_parser_{}".format(scala_version_underscore, scala_version_underscore),
             "@twirl_compiler_cli_{}//:com_google_protobuf_protobuf_java".format(scala_version_underscore),
             "@rules_scala_annex//src/main/scala/higherkindness/rules_scala/common/error",
             "@rules_scala_annex//src/main/scala/higherkindness/rules_scala/common/interrupt",
