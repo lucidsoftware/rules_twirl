@@ -37,8 +37,11 @@ archive_override(
 )
 ```
 
-By default, the Scala 3 version of the Twirl compiler will be used. To change the default to
-Scala 2.13, add the `--@rules_twirl//twirl-toolchain=twirl-2-13` flag to your `.bazelrc` file.
+The Twirl toolchain is selected automatically based on the `scala_version` attribute on
+`twirl_templates` targets (see [Selecting the Scala version](#selecting-the-scala-version) below).
+When `scala_version` is unset, the default Scala version for the project is used:
+`scala.defaults(scala_version = …)` from the `rules_scala_annex` module extension, which this repo
+sets to Scala 3.
 
 If you want to use a custom Twirl compiler, you can set up a custom toolchain like so:
 
@@ -49,22 +52,21 @@ load("@rules_twirl//twirl-toolchain:create-toolchain.bzl", "create_twirl_toolcha
 
 create_twirl_toolchain(
     name = "twirl-custom",
+    scala_version = "3",
     twirl_compiler = "<label of your custom Twirl templates compiler>",
 )
 ```
 
-Then, register your toolchain with Bazel and set it as the default in your `.bazelrc` file:
+If you register more than one custom toolchain for the same `scala_version`, set the `prefix`
+attribute to disambiguate them, e.g., `prefix = "custom"` on the Twirl toolchain and
+`scala_version = "custom_3"` on the `twirl_templates` target.
+
+Then, register your toolchain with Bazel:
 
 */MODULE.bazel*
 
 ```starlark
 register_toolchains("//:twirl-custom")
-```
-
-*/.bazelrc*
-
-```
-common --@rules_twirl//twirl-toolchain=twirl-custom
 ```
 
 You can find the available versions of the Twirl Compiler CLI on maven:
@@ -95,10 +97,8 @@ scala_binary(
 
 ### Overriding the default Twirl compiler
 
-To override the default Twirl compiler for a single target, you can change the
-`twirl_toolchain_name` attribute on the `twirl_routes` target. That attribute can be set to the name
-of any `twirl_toolchain` registered with `twirl_register_toolchains` (and created using
-`create_twirl_toolchain`). By default `twirl-3` and `twirl-2-13` are valid values.
+To select which Twirl compiler to use, set the `scala_version` attribute on the `twirl_templates`
+target. By default, `"3"` and `"2.13"` are valid values.
 
 For example:
 
@@ -110,7 +110,7 @@ twirl_templates(
         + glob(["app/**/*.scala.xml"])
         + glob(["app/**/*.scala.js"])
         + glob(["app/**/*.scala.txt"]),
-    twirl_toolchain_name = "twirl-2-13",
+    scala_version = "2.13",
 )
 ```
 
