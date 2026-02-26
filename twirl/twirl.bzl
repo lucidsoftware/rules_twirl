@@ -1,9 +1,9 @@
-load("//twirl-toolchain:transitions.bzl", "reset_twirl_toolchain_transition", "twirl_toolchain_transition")
-
 """Twirl Template rules
 
 Bazel rules for running the [Twirl Template Compiler](https://github.com/playframework/twirl) on Twirl Template Files
 """
+
+load("//twirl-toolchain:transitions.bzl", "reset_twirl_toolchain_transition", "twirl_toolchain_transition")
 
 gendir_base_path = "main/twirl"
 
@@ -28,6 +28,7 @@ def _format_map_args(formats):
 
 def _impl(ctx):
     imports = play_imports + ctx.attr.additional_imports if ctx.attr.include_play_imports else ctx.attr.additional_imports
+    twirl_toolchain = ctx.toolchains["//twirl-toolchain:toolchain_type"]
 
     outputs = []
     for src in ctx.files.srcs:
@@ -43,9 +44,17 @@ def _impl(ctx):
         args.set_param_file_format("multiline")
         args.use_param_file("@%s", use_always = True)
 
+        # These args are read by the worker launcher script rather than the param file, which is
+        # why they're kept in a separate args object from the param-file args.
+        jvm_flag_args = ctx.actions.args()
+        jvm_flag_args.add_all(
+            twirl_toolchain.jvm_flags,
+            format_each = "--jvm_flag=%s",
+        )
+
         ctx.actions.run(
-            arguments = [args],
-            executable = ctx.toolchains["//twirl-toolchain:toolchain_type"].twirl_compiler.files_to_run,
+            arguments = [jvm_flag_args, args],
+            executable = twirl_toolchain.twirl_compiler.files_to_run,
             execution_requirements = {
                 "supports-workers": "1",
                 "supports-multiplex-workers": "1",
@@ -107,8 +116,8 @@ The default formats are
 ```
 """,
         ),
-        "twirl_toolchain_name": attr.string(
-            doc = "The name of the Twirl toolchain to use for this target",
+        "scala_version": attr.string(
+            doc = "The Scala version to use for this target, e.g., '3', '2.13'.",
         ),
     },
     toolchains = ["//twirl-toolchain:toolchain_type"],

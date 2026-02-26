@@ -1,18 +1,24 @@
 module(name = "rules_twirl")
 
-bazel_dep(name = "bazel_skylib", version = "1.8.1")
-bazel_dep(name = "rules_java", version = "8.16.1")
+bazel_dep(name = "bazel_skylib", version = "1.9.0")
+bazel_dep(name = "rules_java", version = "9.6.1")
 bazel_dep(name = "rules_jvm_external", version = "6.9")
+bazel_dep(name = "protobuf", version = "35.0")
 bazel_dep(name = "rules_scala_annex")
 
-rules_scala_annex_version = "lucid_2025-10-03"
+# TODO: update to release version before mergin
+rules_scala_annex_version = "98c2bdd4bc4222b3099f1a69a1d8038676281ae2"
 
 archive_override(
     module_name = "rules_scala_annex",
-    integrity = "sha256-801JLX227kZgVc2QCzd1JZuQ3huVAOKOdYtCFiXQ/TI=",
+    integrity = "sha256-hI8a8HEaVRLxt4Z3hhEASI90j0YsKPliIg6hG1R145s=",
     strip_prefix = "rules_scala-{}".format(rules_scala_annex_version),
     urls = ["https://github.com/lucidsoftware/rules_scala/archive/{}.zip".format(rules_scala_annex_version)],
 )
+
+scala = use_extension("@rules_scala_annex//:extensions.bzl", "scala")
+scala.defaults(scala_version = "3")
+use_repo(scala, "rules_scala_annex_config")
 
 bazel_dep(name = "buildifier_prebuilt", version = "8.2.1.1", dev_dependency = True)
 bazel_dep(name = "rules_pkg", version = "1.1.0", dev_dependency = True)
@@ -34,7 +40,7 @@ scala_3_version = "3.3.7"
 
 twirl_version = "2.0.9"
 
-protobuf_version = "4.33.2"
+protobuf_version = "4.35.0"
 
 scopt_version = "4.1.0"
 

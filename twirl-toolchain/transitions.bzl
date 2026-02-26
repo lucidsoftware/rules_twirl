@@ -1,48 +1,50 @@
 # This approach of incoming transition, store original values, outgoing
 # transition, reset to original values is inspired by what the rules_go
 # folks are doing.
-toolchain_setting_key = "//twirl-toolchain"
-original_toolchain_setting_key = "//twirl-toolchain:original-twirl-toolchain"
+load(
+    "@rules_scala_annex//rules:register_toolchain.bzl",
+    "original_scala_version_setting",
+    "scala_version_setting",
+)
 
 def _twirl_toolchain_transition_impl(settings, attr):
-    """Update the rules_twirl toolchain to the overridden value. Store
-    The original value, so it can be reset on the outgoing transition.
+    """Update the scala_version to the overridden value.
+
+    Store the original value, so it can be reset on the outgoing transition.
     """
-    if attr.twirl_toolchain_name == "" or attr.twirl_toolchain_name == settings[toolchain_setting_key]:
+    if attr.scala_version == "" or attr.scala_version == settings[scala_version_setting]:
         # Do nothing when the attribute value is what the setting currently is
         # otherwise needlessly change build settings by modifying the setting
         # we store the original value in
         return {}
 
     new_settings = {}
-    new_settings[toolchain_setting_key] = attr.twirl_toolchain_name
+    new_settings[scala_version_setting] = attr.scala_version
 
-    # Store the original toolchain value, so we can reset it
-    new_settings[original_toolchain_setting_key] = json.encode(settings[toolchain_setting_key])
+    # Store the original scala_version value, so we can reset it
+    new_settings[original_scala_version_setting] = settings[scala_version_setting]
 
     return new_settings
 
 twirl_toolchain_transition = transition(
     implementation = _twirl_toolchain_transition_impl,
     inputs = [
-        toolchain_setting_key,
-        original_toolchain_setting_key,
+        scala_version_setting,
+        original_scala_version_setting,
     ],
     outputs = [
-        toolchain_setting_key,
-        original_toolchain_setting_key,
+        scala_version_setting,
+        original_scala_version_setting,
     ],
 )
 
 def _reset_twirl_toolchain_transition_impl(settings, attr):
-    """Sets the rules_twirl toolchain to the values it had before the
-    last twirl_toolchain_transition.
-    """
+    """Sets the scala_version to the value it had before the last twirl_toolchain_transition."""
 
-    if settings[original_toolchain_setting_key] != "":
+    if settings[original_scala_version_setting] != "":
         new_settings = {}
-        new_settings[toolchain_setting_key] = json.decode(settings[original_toolchain_setting_key])
-        new_settings[original_toolchain_setting_key] = ""
+        new_settings[scala_version_setting] = settings[original_scala_version_setting]
+        new_settings[original_scala_version_setting] = ""
         return new_settings
     else:
         return {}
@@ -50,11 +52,11 @@ def _reset_twirl_toolchain_transition_impl(settings, attr):
 reset_twirl_toolchain_transition = transition(
     implementation = _reset_twirl_toolchain_transition_impl,
     inputs = [
-        toolchain_setting_key,
-        original_toolchain_setting_key,
+        scala_version_setting,
+        original_scala_version_setting,
     ],
     outputs = [
-        toolchain_setting_key,
-        original_toolchain_setting_key,
+        scala_version_setting,
+        original_scala_version_setting,
     ],
 )
