@@ -1,6 +1,19 @@
+load("//twirl-toolchain:create-toolchain.bzl", "create_twirl_toolchain")
 load(":twirl-compiler-test.bzl", "generate_twirl_test_targets")
+load(":twirl-jvm-flags-test.bzl", "twirl_jvm_flags_test_suite")
 
 # Check twirlroutes-compiler-test.bzl for the actual test definitions
 generate_twirl_test_targets(scala_version = "3")
 
 generate_twirl_test_targets(scala_version = "2.13")
+
+# Test-only toolchain for testing jvm_flags propagation.
+create_twirl_toolchain(
+    name = "twirl-jvm-flags",
+    jvm_flags = ["-Drules_twirl.test=1"],
+    prefix = "jvmflagtest",
+    scala_version = "3",
+    twirl_compiler = "//twirl-compiler-cli:twirl-compiler-cli-3",
+)
+
+twirl_jvm_flags_test_suite(name = "twirl-jvm-flags-test")
