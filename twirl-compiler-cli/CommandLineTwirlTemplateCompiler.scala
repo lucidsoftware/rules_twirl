@@ -2,7 +2,7 @@ package rulestwirl.twirl
 
 import higherkindness.rules_scala.common.error.AnnexWorkerError
 import higherkindness.rules_scala.common.interrupt.InterruptUtil
-import higherkindness.rules_scala.common.sandbox.SandboxUtil
+import higherkindness.rules_scala.common.sandbox.PathResolver
 import higherkindness.rules_scala.common.worker.{WorkTask, WorkerMain}
 import play.twirl.compiler.TwirlCompiler
 import play.twirl.parser.TwirlIO
@@ -24,7 +24,7 @@ object CommandLineTwirlTemplateCompiler extends WorkerMain[Unit] {
     var output: Path = Paths.get("."),
   )
 
-  def parser(workDir: Path, out: PrintStream) = new OptionParser[Config]("twirl-compiler") {
+  def parser(pathResolver: PathResolver, out: PrintStream) = new OptionParser[Config]("twirl-compiler") {
     head("Command Line Twirl Template Compiler", "0.2")
 
     override def displayToOut(msg: String): Unit = out.println(msg)
@@ -38,7 +38,7 @@ object CommandLineTwirlTemplateCompiler extends WorkerMain[Unit] {
     arg[Path]("<output>")
       .required()
       .action { (value, config) =>
-        config.output = SandboxUtil.getSandboxPath(workDir, value)
+        config.output = pathResolver.resolve(value)
         config
       }
       .text("output file")
@@ -46,7 +46,7 @@ object CommandLineTwirlTemplateCompiler extends WorkerMain[Unit] {
     arg[Path]("<sourceDirectory>")
       .required()
       .action { (value, config) =>
-        config.sourceDirectory = SandboxUtil.getSandboxPath(workDir, value)
+        config.sourceDirectory = pathResolver.resolve(value)
         config
       }
       .text("root source directory")
@@ -55,7 +55,7 @@ object CommandLineTwirlTemplateCompiler extends WorkerMain[Unit] {
       .unbounded()
       .required()
       .action { (value, config) =>
-        config.source = SandboxUtil.getSandboxPath(workDir, value)
+        config.source = pathResolver.resolve(value)
         config
       }
       .text("source file")
@@ -113,7 +113,7 @@ object CommandLineTwirlTemplateCompiler extends WorkerMain[Unit] {
     }
     InterruptUtil.throwIfInterrupted(task.isCancelled)
 
-    parser(task.workDir, task.output)
+    parser(PathResolver.forPersistentWorker(task.workDir), task.output)
       .parse(finalArgs, Config())
       .map { config =>
         InterruptUtil.throwIfInterrupted(task.isCancelled)
