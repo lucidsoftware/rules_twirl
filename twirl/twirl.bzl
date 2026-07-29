@@ -1,9 +1,13 @@
-load("//twirl-toolchain:transitions.bzl", "reset_twirl_toolchain_transition", "twirl_toolchain_transition")
-
 """Twirl Template rules
 
 Bazel rules for running the [Twirl Template Compiler](https://github.com/playframework/twirl) on Twirl Template Files
 """
+
+load(
+    "@rules_scala_annex//rules:register_toolchain.bzl",
+    _scala_incoming_transition = "scala_incoming_transition",
+    _scala_outgoing_transition = "scala_outgoing_transition",
+)
 
 gendir_base_path = "main/twirl"
 
@@ -28,6 +32,7 @@ def _format_map_args(formats):
 
 def _impl(ctx):
     imports = play_imports + ctx.attr.additional_imports if ctx.attr.include_play_imports else ctx.attr.additional_imports
+    twirl_toolchain = ctx.toolchains["//twirl-toolchain:toolchain_type"]
 
     outputs = []
     for src in ctx.files.srcs:
@@ -43,9 +48,17 @@ def _impl(ctx):
         args.set_param_file_format("multiline")
         args.use_param_file("@%s", use_always = True)
 
+        # These args are read by the worker launcher script rather than the param file, which is
+        # why they're kept in a separate args object from the param-file args.
+        jvm_flag_args = ctx.actions.args()
+        jvm_flag_args.add_all(
+            twirl_toolchain.jvm_flags,
+            format_each = "--jvm_flag=%s",
+        )
+
         ctx.actions.run(
-            arguments = [args],
-            executable = ctx.toolchains["//twirl-toolchain:toolchain_type"].twirl_compiler.files_to_run,
+            arguments = [jvm_flag_args, args],
+            executable = twirl_toolchain.twirl_compiler.files_to_run,
             execution_requirements = {
                 "supports-workers": "1",
                 "supports-multiplex-workers": "1",
@@ -66,26 +79,25 @@ def _impl(ctx):
         DefaultInfo(files = depset(outputs)),
     ]
 
-# If you add any labels or label_lists, you will need to add the
-# reset_twirl_toolchain_transition outgoing transition to it. Otherwise
-# you'll end up needlessly changing build config and causing an explosion in
-# size for the build graph.
+# If you add any labels or label_lists, you will need to add the Scala outgoing transition to it.
+# Otherwise you'll end up needlessly changing build config and causing an explosion in size for the
+# build graph.
 twirl_templates = rule(
     implementation = _impl,
-    cfg = twirl_toolchain_transition,
+    cfg = _scala_incoming_transition,
     doc = "Compiles Twirl templates to Scala sources files.",
     attrs = {
         "source_directory": attr.label(
             doc = "Directories where Twirl template files are located.",
             allow_single_file = True,
             mandatory = True,
-            cfg = reset_twirl_toolchain_transition,
+            cfg = _scala_outgoing_transition,
         ),
         "srcs": attr.label_list(
             doc = "The actual template files contained in the source_directory.",
             allow_files = True,
             mandatory = True,
-            cfg = reset_twirl_toolchain_transition,
+            cfg = _scala_outgoing_transition,
         ),
         "additional_imports": attr.string_list(
             doc = "Additional imports to import to the Twirl templates.",
@@ -107,8 +119,8 @@ The default formats are
 ```
 """,
         ),
-        "twirl_toolchain_name": attr.string(
-            doc = "The name of the Twirl toolchain to use for this target",
+        "scala_version": attr.string(
+            doc = "The Scala version to use for this target, e.g., '3', '2.13'.",
         ),
     },
     toolchains = ["//twirl-toolchain:toolchain_type"],
