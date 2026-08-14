@@ -28,6 +28,6 @@ Compiles Twirl templates to Scala sources files.
 | <a id="twirl_templates-include_play_imports"></a>include_play_imports |  If true, include the imports the Play project includes by default.   | Boolean | optional |  `False`  |
 | <a id="twirl_templates-scala_version"></a>scala_version |  The Scala version to use for this target, e.g., '3', '2.13'.   | String | optional |  `""`  |
 | <a id="twirl_templates-source_directory"></a>source_directory |  Directories where Twirl template files are located.   | <a href="https://bazel.build/concepts/labels">Label</a> | required |  |
-| <a id="twirl_templates-template_formats"></a>template_formats |  Formatter types for file extensions.<br><br>The default formats are <pre><code>"html" -&gt; "play.twirl.api.HtmlFormat",&#10;"txt" -&gt; "play.twirl.api.TxtFormat",&#10;"xml" -&gt; "play.twirl.api.XmlFormat",&#10;"js" -&gt; "play.twirl.api.JavaScriptFormat"</code></pre>   | <a href="https://bazel.build/rules/lib/dict">Dictionary: String -> String</a> | optional |  `{}`  |
+| <a id="twirl_templates-template_formats"></a>template_formats |  Formatter types for file extensions.<br><br>The default formats are <pre><code>"html" -&gt; "play.twirl.api.HtmlFormat",&#10;"txt" -&gt; "play.twirl.api.TxtFormat",&#10;"xml" -&gt; "play.twirl.api.XmlFormat",&#10;"js" -&gt; "play.twirl.api.JavaScriptFormat"</code></pre>   | <a href="https://bazel.build/rules/lib/core/dict">Dictionary: String -> String</a> | optional |  `{}`  |
 
 
